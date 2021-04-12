@@ -29,7 +29,8 @@ github_username: ''
 markdown: kramdown
 
 # Build settings
-theme: 'just-the-docs'
+#theme: 'just-the-docs'
+theme: 'jekyll-text-theme'
 plugins:
   - jekyll-feed
   - kramdown-parser-gfm
@@ -40,7 +41,7 @@ defaults:
       path: ''
       type: 'pages'
     values:
-        layout: 'default'
+        layout: 'base'
 
 permalink: pretty
 

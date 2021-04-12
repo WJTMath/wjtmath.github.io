@@ -1,4 +1,7 @@
 ---
+layout: home
+# articles:
+#   excerpt_type: html
 ---
 
 This is a paragraph.
