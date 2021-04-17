@@ -1,0 +1,43 @@
+header:
+  - title: Course Home 
+    url: /applied-calculus/index.html
+
+app-calc:
+  - title: Applied Calculus
+    children:
+      - title: child
+        url: /
+  - title: "Limits and Continuity"
+    children:
+      - title: '01: Exponents and Equations'
+        url: /applied-calculus/m01-exponents-equations.html
+      - title: '02: Functions and Graphing'
+        url: /applied-calculus/m02-functions-graphing.html
+      - title: '03: Exponential and Logarithmic Functions'
+        url: /applied-calculus/m03-exponential-logarithmic-functions.html
+      - title: '04: Limits and Continuity'
+        url: /applied-calculus/m04-limits-continuity.html
+      - title: '05: Limits and Derivatives'
+        url: /applied-calculus/m05-limits-and-derivatives.html
+      - title: '06: Properties of Derivatives'
+        url: /applied-calculus/m06-properties-of-derivatives.html
+      - title: '07: Product and Quotient Rules'
+        url: /applied-calculus/m07-product-quotient-rules.html
+      - title: '08: Other Derivative Rules'
+        url: /applied-calculus/m08-other-derivative-rules.html
+      - title: '09: Implicit Differentiation'
+        url: /applied-calculus/m09-implicit-differentiation.html
+      - title: '10: The First Derivative Test'
+        url: /applied-calculus/m10-first-derivative-test.html
+      - title: '11: Business Applications of Derivatives'
+        url: /applied-calculus/m11-business-applications.html
+      - title: '12: The Second Derivative Test'
+        url: /applied-calculus/m12-second-derivative-test.html
+      - title: '13: Antiderivatives and Integrals'
+        url: /applied-calculus/m13-antiderivatives-integrals.html
+      - title: '14: Integration Rules and Substitution'
+        url: /applied-calculus/m14-integraion-rules-substitution.html
+      - title: '15: Area and Integration'
+        url: /applied-calculus/m15-area-integration.html
+      - title: '16: Integration by Parts'
+        url: /applied-calculus/m16-integration-by-parts.html
