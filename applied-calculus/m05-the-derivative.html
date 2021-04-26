@@ -1,0 +1,2024 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>05: The Derivative - WJT Mathematics</title>
+
+<meta name="description" content="Description">
+<link rel="canonical" href="/applied-calculus/m05-the-derivative.html"><link rel="alternate" type="application/rss+xml" title="WJT Mathematics" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+
+<meta name="theme-color" content="#ffffff">
+<!-- end favicons snippet --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" ><!-- start custom head snippets -->
+<script>
+window.MathJax = {
+  loader: {
+    load: ['input/asciimath', '[tex]/noerrors']
+  },
+  asciimath: {
+    delimiters: [['`','`']],
+    displaystyle: false
+  },
+  tex: {
+    inlineMath: [ ["\\(","\\)"] ],
+    displayMath: [ ["\\[","\\]"] ],
+    tags: 'none',
+    packages: {'[+]': ['noerrors']},
+    macros: {
+        /* RR: '\\mathbb{R}', */
+        ddx: ['\\frac{d#2}{d#1}',2,'x'],
+    }
+  },
+  svg: {
+    /* fontCache: 'global', */
+  },
+  options: {
+    menuOptions: {
+      settings: {
+        zoom: 'Click',
+        zscale: '200%',
+        collapsible: true
+      }
+    },
+    /*ignoreHtmlClass: 'tex2jax_ignore',
+    processHtmlClass: 'tex2jax_process'*/
+  }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script"></script>
+
+<script type="text/javascript" charset="UTF-8"
+ src="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.1.0/jsxgraphcore.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.1.0/jsxgraph.css" />
+<script>
+JXG.merge(JXG.Options.board, {
+  keepAspectRatio: true,
+  axis: true,
+  showCopyright: false,
+  showNavigation: false,
+  showFullscreen: true
+});
+JXG.merge(JXG.Options.ticks, {
+  drawLabels: true,
+  majorHeight: -1,
+  strokeColor: '#cccccc'
+});
+JXG.Options.curve.strokeWidth = 2;
+JXG.Options.elements.highlight = false;
+JXG.Options.slider.ticks.majorHeight = 0;
+
+// Custom styles and objects.
+JXG.WJT = {};
+JXG.WJT.point = {
+  strokeColor: 'blue',
+  fillColor: 'blue',
+  fixed: true,
+  scalable: true,
+  withLabel: false,
+  showInfobox: false,
+  zoom: true
+};
+JXG.WJT.openPoint = {
+  ...JXG.WJT.point,
+  fillColor: 'white'
+}
+</script>
+<!-- end custom head snippets -->
+<script>(function() {
+  window.isArray = function(val) {
+    return Object.prototype.toString.call(val) === '[object Array]';
+  };
+  window.isString = function(val) {
+    return typeof val === 'string';
+  };
+
+  window.hasEvent = function(event) {
+    return 'on'.concat(event) in window.document;
+  };
+
+  window.isOverallScroller = function(node) {
+    return node === document.documentElement || node === document.body || node === window;
+  };
+
+  window.isFormElement = function(node) {
+    var tagName = node.tagName;
+    return tagName === 'INPUT' || tagName === 'SELECT' || tagName === 'TEXTAREA';
+  };
+
+  window.pageLoad = (function () {
+    var loaded = false, cbs = [];
+    window.addEventListener('load', function () {
+      var i;
+      loaded = true;
+      if (cbs.length > 0) {
+        for (i = 0; i < cbs.length; i++) {
+          cbs[i]();
+        }
+      }
+    });
+    return {
+      then: function(cb) {
+        cb && (loaded ? cb() : (cbs.push(cb)));
+      }
+    };
+  })();
+})();
+(function() {
+  window.throttle = function(func, wait) {
+    var args, result, thisArg, timeoutId, lastCalled = 0;
+
+    function trailingCall() {
+      lastCalled = new Date;
+      timeoutId = null;
+      result = func.apply(thisArg, args);
+    }
+    return function() {
+      var now = new Date,
+        remaining = wait - (now - lastCalled);
+
+      args = arguments;
+      thisArg = this;
+
+      if (remaining <= 0) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+        lastCalled = now;
+        result = func.apply(thisArg, args);
+      } else if (!timeoutId) {
+        timeoutId = setTimeout(trailingCall, remaining);
+      }
+      return result;
+    };
+  };
+})();
+(function() {
+  var Set = (function() {
+    var add = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (data[i] === item) {
+          return;
+        }
+      }
+      this.size ++;
+      data.push(item);
+      return data;
+    };
+
+    var Set = function(data) {
+      this.size = 0;
+      this._data = [];
+      var i;
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          add.call(this, data[i]);
+        }
+      }
+    };
+    Set.prototype.add = add;
+    Set.prototype.get = function(index) { return this._data[index]; };
+    Set.prototype.has = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (this.get(i) === item) {
+          return true;
+        }
+      }
+      return false;
+    };
+    Set.prototype.is = function(map) {
+      if (map._data.length !== this._data.length) { return false; }
+      var i, j, flag, tData = this._data, mData = map._data;
+      for (i = 0; i < tData.length; i++) {
+        for (flag = false, j = 0; j < mData.length; j++) {
+          if (tData[i] === mData[j]) {
+            flag = true;
+            break;
+          }
+        }
+        if (!flag) { return false; }
+      }
+      return true;
+    };
+    Set.prototype.values = function() {
+      return this._data;
+    };
+    return Set;
+  })();
+
+  window.Lazyload = (function(doc) {
+    var queue = {js: [], css: []}, sources = {js: {}, css: {}}, context = this;
+    var createNode = function(name, attrs) {
+      var node = doc.createElement(name), attr;
+      for (attr in attrs) {
+        if (attrs.hasOwnProperty(attr)) {
+          node.setAttribute(attr, attrs[attr]);
+        }
+      }
+      return node;
+    };
+    var end = function(type, url) {
+      var s, q, qi, cbs, i, j, cur, val, flag;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        s[url] = true;
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (cur.urls.has(url)) {
+            qi = cur, val = qi.urls.values();
+            qi && (cbs = qi.callbacks);
+            for (flag = true, j = 0; j < val.length; j++) {
+              cur = val[j];
+              if (!s[cur]) {
+                flag = false;
+              }
+            }
+            if (flag && cbs && cbs.length > 0) {
+              for (j = 0; j < cbs.length; j++) {
+                cbs[j].call(context);
+              }
+              qi.load = true;
+            }
+          }
+        }
+      }
+    };
+    var load = function(type, urls, callback) {
+      var s, q, qi, node, i, cur,
+        _urls = typeof urls === 'string' ? new Set([urls]) : new Set(urls), val, url;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (_urls.is(cur.urls)) {
+            qi = cur;
+            break;
+          }
+        }
+        val = _urls.values();
+        if (qi) {
+          callback && (qi.load || qi.callbacks.push(callback));
+          callback && (qi.load && callback());
+        } else {
+          q.push({
+            urls: _urls,
+            callbacks: callback ? [callback] : [],
+            load: false
+          });
+          for (i = 0; i < val.length; i++) {
+            node = null, url = val[i];
+            if (s[url] === undefined) {
+              (type === 'js' ) && (node = createNode('script', { src: url }));
+              (type === 'css') && (node = createNode('link', { rel: 'stylesheet', href: url }));
+              if (node) {
+                node.onload = (function(type, url) {
+                  return function() {
+                    end(type, url);
+                  };
+                })(type, url);
+                (doc.head || doc.body).appendChild(node);
+                s[url] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+    return {
+      js: function(url, callback) {
+        load('js', url, callback);
+      },
+      css: function(url, callback) {
+        load('css', url, callback);
+      }
+    };
+  })(this.document);
+})();
+</script><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      version: '2.2.6',
+      sources: {
+        font_awesome: 'https://use.fontawesome.com/releases/v5.0.13/css/all.css',
+        jquery: 'https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn.jsdelivr.net/npm/leancloud-storage@3.13.2/dist/av-min.js',
+        chart: 'https://cdn.bootcss.com/Chart.js/2.7.2/Chart.bundle.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.css'
+        },
+        valine: 'https://unpkg.com/valine/dist/Valine.min.js',
+        mathjax: 'https://cdn.bootcss.com/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML',
+        mermaid: 'https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h1,h2,h3'
+        }
+      },
+      paths: {
+        search_js: '/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script>
+</head>
+  <body>
+    <div class="root" data-is-touch="false">
+      <div class="layout--page layout--page--sidebar clearfix js-page-root">
+  <div class="page__mask d-print-none js-page-mask js-sidebar-hide"></div>
+  <div class="page__viewport">
+    <div class="page__actions d-print-none">
+      <div class="button button--circle button--lg box-shadow-2 sidebar-button js-sidebar-show">
+        <i class="fas fa-bars icon--show"></i>
+      </div>
+    </div>
+
+    <div class="grid page__grid">
+
+      <div class="page__sidebar d-print-none"><div class="sidebar-toc"><ul class="toc toc--navigator"><li class="toc-h1">Applied Calculus</li><li class="toc-h2"><a href="/applied-calculus/">Course Home</a></li><li class="toc-h1">Functions and Limits</li><li class="toc-h2"><a href="/applied-calculus/m01-exponents-equations.html">01: Exponents and Equations</a></li><li class="toc-h2"><a href="/applied-calculus/m02-functions-graphing.html">02: Functions and Graphing</a></li><li class="toc-h2"><a href="/applied-calculus/m03-exponential-logarithmic-functions.html">03: Exponential and Logarithmic Functions</a></li><li class="toc-h2"><a href="/applied-calculus/m04-limits-continuity.html">04: Limits and Continuity</a></li><li class="toc-h1">The Derivative</li><li class="toc-h2 active"><a href="/applied-calculus/m05-the-derivative.html">05: Limits and Derivatives</a></li><li class="toc-h2"><a href="/applied-calculus/m06-properties-of-derivatives.html">06: Properties of Derivatives</a></li><li class="toc-h2"><a href="/applied-calculus/m07-product-quotient-rules.html">07: Product and Quotient Rules</a></li><li class="toc-h2"><a href="/applied-calculus/m08-other-derivative-rules.html">08: Other Derivative Rules</a></li><li class="toc-h1">Applications of Derivatives</li><li class="toc-h2"><a href="/applied-calculus/m09-implicit-differentiation.html">09: Implicit Differentiation</a></li><li class="toc-h2"><a href="/applied-calculus/m10-first-derivative-test.html">10: The First Derivative Test</a></li><li class="toc-h2"><a href="/applied-calculus/m11-business-applications.html">11: Business Applications of Derivatives</a></li><li class="toc-h2"><a href="/applied-calculus/m12-second-derivative-test.html">12: The Second Derivative Test</a></li><li class="toc-h1">The Integral</li><li class="toc-h2"><a href="/applied-calculus/m13-antiderivatives-integrals.html">13: Antiderivatives and Integrals</a></li><li class="toc-h2"><a href="/applied-calculus/m14-integraion-rules-substitution.html">14: Integration Rules and Substitution</a></li><li class="toc-h2"><a href="/applied-calculus/m15-area-integration.html">15: Area and Integration</a></li><li class="toc-h2"><a href="/applied-calculus/m16-integration-by-parts.html">16: Integration by Parts</a></li></ul></div></div><div class="page__main js-page-main has-aside cell cell--auto">
+
+      <div class="page__main-inner"><div class="page__header d-print-none"><header class="header"><div class="main">
+      <div class="header__title">
+        <div class="header__brand"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#515151;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
+</svg>
+<a title="Description" href="/">WJT Mathematics</a></div></div><nav class="navigation">
+        <ul><li class="navigation__item"><a href="/">Home</a></li></ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
+
+              <div class="col-aside d-print-none js-col-aside"><aside class="page__aside js-page-aside"><ul class="toc-aside toc toc--ellipsis"><li class="toc-h2"><a href="#prelude-slope-and-rate-of-change">Prelude: Slope and Rate of Change</a></li><li class="toc-h2"><a href="#definition-of-the-derivative">Definition of the Derivative</a></li></ul>
+</aside></div>
+
+              <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
+
+<!-- end custom main top snippet -->
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>05: The Derivative</h1></header></div><meta itemprop="headline" content="05: The Derivative"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+
+<!-- end custom article top snippet -->
+<div class="article__content" itemprop="articleBody"><h2 id="prelude-slope-and-rate-of-change">Prelude: Slope and Rate of Change</h2>
+
+<p>The slope of a linear function measures how quickly its value rises or falls as its inpul value changes.
+Graphically, this is measured as the change in vertical distance when moving from left to right along the line’s graph.
+Intuitively, you may be familial with the “rise over run” definition.
+Slopes are often fractions because of their definition, comparing (dividing) one amount of change by another.
+The graph below shows algebraic definition.</p>
+
+<div class="jsxgraph mx-auto" id="jxg_t1" style="width:200px; height:200px;">
+  <noscript><img src="assets/svg/test.svg" /></noscript>
+</div>
+<script>
+{
+  let b = JXG.JSXGraph.initBoard('jxg_t1',{
+    boundingbox: [-1,9,9,-1],
+    axis: false
+  });
+  b.create('functiongraph',[(x)=>x,0,8]);
+  b.create('point',[3,3],JXG.WJT.point);
+  b.create('point',[3,5],JXG.WJT.openPoint);
+  b.create('circle',[[1,3],[1.1,3.1]],{fillColor:'blue'});
+  b.create('circle',[[4,2],[4.1,2.1]],{fillColor:'white'});
+  b.create('circle',[[4,1],[4.1,1.1]],{fillColor:'blue'});
+  b.create('circle',[[6,2],[6.1,2.1]],{fillColor:'blue'});
+  b.create('circle',[[6,1],[6.1,1.1]],{fillColor:'white'});
+  b.create('circle',[[8,3],[8.1,3.1]],{fillColor:'white'});
+}
+</script>
+
+<p>It measures the <em>rate of change</em> of the y-coordinate with respect to changes in
+the x-coordinate. If the line represents the distance traveled
+over time, for example, then its slope represents the
+velocity. In the figure, you can remind yourself of how we
+calculate slope using two points on the line:
+x
+y
+x
+x
+y
+y
+m
+∆
+∆
+=
+−
+−
+=
+=
+=
+1
+2
+1
+2
+run
+rise
+Q
+to
+P
+from
+slope
+We would like to be able to get that same sort of information (how fast the curve rises or falls,
+velocity from distance) even if the graph is not a straight line. But what happens if we try to find
+the slope of a curve at a point, as in the figure below? We need two points in order to determine
+the slope of a line. How can we find a slope of a curve, at just one point?
+The answer, as suggested in the figure, is to find the slope of the
+tangent line to the curve at that point. Most of us have an intuitive
+idea of what a tangent line is. Unfortunately, “tangent line” is hard to
+define precisely.
+Definition: A secant line is a line between two points on a
+curve, as in the figure to the right.
+Can’t-quite-do-it-yet Definition: A tangent line is a line at one
+point on a curve …. that does its best to be the curve at that
+point?
+As you may be able to see, the closer the point Q is to the point P,
+the closer the secant slope gets to the tangent slope. This will be
+key to finding the tangent slope, but first we need to more carefully
+define the idea of “getting closer to.”</p>
+
+<h2 id="definition-of-the-derivative">Definition of the Derivative</h2>
+
+<p>Suppose we drop a tomato from the top of a 100 foot building and time its fall.
+Some questions are easy to answer directly from the table:
+(a) How long did it take for the tomato n to drop 100 feet?
+(2.5 seconds)
+(b) How far did the tomato fall during the first second?
+(100 – 84 = 16 feet)
+(c) How far did the tomato fall during the last second?
+(64 – 0 = 64 feet)
+(d) How far did the tomato fall between t =.5 and t = 1?
+(96 – 84 = 12 feet)
+Some other questions require a little calculation:
+(e) What was the average velocity of the tomato during its fall?
+Average velocity = distance fallen
+total time
+=
+∆ position
+∆ time = –100 ft
+2.5 s = –40 ft/s .
+(f) What was the average velocity between t=1 and t=2 seconds?
+Average velocity = ∆ position
+∆ time =
+36 ft – 84 ft
+2 s – 1 s = –48 ft
+1 s = –48 ft/s .
+Some questions are more difficult.
+(g) How fast was the tomato falling 1 second after it was dropped?
+This question is significantly different from the previous two questions about average velocity.
+Here we want the instantaneous velocity, the velocity at an instant in time. Unfortunately the
+tomato is not equipped with a speedometer so we will have to give an approximate answer.
+One crude approximation of the instantaneous velocity after 1 second is simply the average
+velocity during the entire fall, –40 ft/s . But the tomato fell slowly at the beginning and
+rapidly near the end so the “–40 ft/s” estimate may or may not be a good answer.
+Time (sec)
+Height (ft)
+0.0
+100
+0.5
+96
+1.0
+84
+1.5
+64
+2.0
+36
+2.5
+0
+Chapter 2 The Derivative
+Applied Calculus
+81
+We can get a better approximation of the instantaneous velocity at t=1 by calculating the
+average velocities over a short time interval near t = 1 . The average velocity between t = 0.5
+and t = 1 is –12 feet
+0.5 s = –24 ft/s, and the average velocity between t = 1 and t = 1.5 is
+–20 feet
+.5 s
+= –40 ft/s so we can be reasonably sure that the instantaneous velocity is between –
+24 ft/s and –40 ft/s.
+In general, the shorter the time interval over which we
+calculate the average velocity, the better the average
+velocity will approximate the instantaneous velocity.
+The average velocity over a time interval is ∆ position
+∆ time ,
+which is the slope of the secant line through two points
+on the graph of height versus time. The instantaneous
+velocity at a particular time and height is the slope of the
+tangent line to the graph at the point given by that time
+and height.
+Average velocity = ∆ position
+∆ time = slope of the secant line through 2 points.
+Instantaneous velocity = slope of the line tangent to the graph.
+GROWING BACTERIA
+Suppose we set up a machine to count the
+number of bacteria growing on a Petri plate. At
+first there are few bacteria so the population
+grows slowly. Then there are more bacteria to
+divide so the population grows more quickly.
+Later, there are more bacteria and less room and
+nutrients available for the expanding population,
+so the population grows slowly again. Finally,
+the bacteria have used up most of the nutrients,
+and the population declines as bacteria die.
+Chapter 2 The Derivative
+Applied Calculus
+82
+The population graph can be used to answer a number of questions.
+(a) What is the bacteria population at time t = 3 days?
+From the graph, at t = 3, the population is about 0.5 thousand, or 500 bacteria.
+(b) What is the population increment from t = 3 to t =10 days?
+At t = 10, the population is about 4.5 thousand, so the increment is about 4000 bacteria
+(c) What is the rate of population growth from t = 3 to t = 10 days?
+The rate of growth from t = 3 to t = 10 is the average change in population during that
+time:
+average change in population
+= change in population
+change in time
+=
+∆ population
+∆ time
+= 4000 bacteria
+7 days
+≈ 570 bacteria/day .
+This is the slope of the secant line through the two points (3, 500) and (10, 4500).
+(d) What is the rate of population growth on the third day, at t = 3 ?
+This question is asking for the
+instantaneous rate of population change,
+the slope of the line which is tangent to
+the population curve at (3, 500). If we
+sketch a line approximately tangent to the
+curve at (3, 500) and pick two points
+near the ends of the tangent line segment ,
+we can estimate that instantaneous rate of
+population growth is approximately 320
+bacteria/day .
+Chapter 2 The Derivative
+Applied Calculus
+83
+Tangent Lines
+Do this!
+The graph below is the graph of
+( )
+x
+f
+y =
+. We want to find the slope of the tangent line at the
+point (1, 2).
+First, draw the secant line between (1, 2) and (2, −1) and compute its slope.
+Now draw the secant line between (1, 2) and (1.5, 1) and compute its slope.
+Compare the two lines you have drawn. Which would be a better approximation of the tangent
+line to the curve at (1, 2)?
+Now draw the secant line between (1, 2) and (1.3, 1.5) and compute its slope. Is this line an even
+better approximation of the tangent line?
+Now draw your best guess for the tangent line and measure its slope. Do you see a pattern in the
+slopes?
+You should have noticed that as the interval got smaller and smaller, the secant line got closer to
+the tangent line and its slope got closer to the slope of the tangent line. That’s good news – we
+know how to find the slope of a secant line.
+In some applications, we need to know where the graph of a function f(x) has horizontal tangent lines
+(slopes = 0).
+Example 1
+At right is the graph of y = g(x). At what values of x does the graph of y = g(x) below have
+horizontal tangent lines?
+The tangent lines to the graph of g(x) are horizontal (slope = 0) when x ≈ –1, 1, 2.5, and 5.
+Chapter 2 The Derivative
+Applied Calculus
+84
+Let’s explore further this idea of finding the tangent slope based on the secant slope.
+Example 2
+Find the slope of the line L in the graph below which is tangent to f(x) = x2 at the point (2,4).
+We could estimate the slope of L from the graph, but we won’t. Instead, we will use the idea
+that secant lines over tiny intervals approximate the tangent line.
+We can see that the line through (2,4) and (3,9) on the graph of f is an approximation of the
+slope of the tangent line, and we can calculate that slope exactly: m = ∆y/∆x = (9–4)/(3–2) = 5.
+But m = 5 is only an estimate of the slope of the tangent line and not a very good estimate. It’s
+too big. We can get a better estimate by picking a second point on the graph of f which is closer
+to (2,4) –– the point (2,4) is fixed and it must be one of the points we use.
+From the second figure, we can see that the slope of the line through the points (2,4) and
+(2.5,6.25) is a better approximation of the slope of the tangent line at (2,4):
+6.25
+4
+2.25
+4.5
+2.5
+2
+0.5
+y
+m
+x
+∆
+−
+=
+=
+=
+=
+∆
+−
+a better estimate, but still an approximation. We can continue picking points closer and closer
+to (2,4) on the graph of f, and then calculating the slopes of the lines through each of these
+points and the point (2,4):
+The only thing special about the x–values we picked is that they are numbers which are close,
+and very close, to x = 2. Someone else might have picked other nearby values for x. As the
+points we pick get closer and closer to the point (2,4) on the graph of y = x2 , the slopes of the
+lines through the points and (2,4) are better approximations of the slope of the tangent line,
+and these slopes are getting closer and closer to 4.
+Points to the left of (2,4)
+Points to the left of (2,4)
+x
+y = x2
+Slope
+x
+y = x2
+Slope
+1.5
+2.25
+3.5
+3
+9
+5
+1.9
+3.61
+3.9
+2.5
+6.25
+4.5
+1.99 3.9601 3.99
+2.01 4.0401
+4.01
+Chapter 2 The Derivative
+Applied Calculus
+85
+We can bypass much of the calculating by not picking the points one at a time: let’s look at a
+general point near (2,4). Define x = 2 + h so h is the increment from 2 to x. If h is small,
+then x = 2 + h is close to 2 and the point (
+) (
+)
+2
+2
+,
+(2
+)
+2
+,(2
+)
+h f
+h
+h
+h
++
++
+=
++
++
+is close to (2,4).
+The slope m of the line through the points (2,4) and (
+)
+2
+2
+,(2
+)
+h
+h
++
++
+is a good approximation
+of the slope of the tangent line at the point (2,4):
+(
+)
+2
+2
+2
+4
+4
+4
+(2
+)
+4
+4
+4
+(2
+)
+2
+h
+h
+y
+h
+h
+h
+m
+h
+x
+h
+h
+h
++
++
+−
+∆
++
+−
++
+=
+=
+=
+=
+=
++
+∆
++
+−
+The value m = 4 + h is the slope of the secant line through the two points (2,4) and
+(
+)
+2
+2
+,(2
+)
+h
+h
++
++
+. As h gets smaller and smaller, this slope approaches the slope of the tangent
+line to the graph of f at (2,4).
+More formally, we could write: Slope of the tangent line =
+)
+4
+(
+lim
+lim
+0
+0
+h
+x
+y
+h
+h
++
+=
+∆
+∆
+→
+→
+We can easily evaluate this limit using direct substitution, finding that as the interval h shrinks
+towards 0, the secant slope approaches the tangent slope, 4.
+The tangent line problem and the instantaneous velocity problem are the same problem. In each
+problem we wanted to know how rapidly something was changing at an instant in time, and the
+answer turned out to be finding the slope of a tangent line, which we approximated with the slope
+of a secant line. This idea is the key to defining the slope of a curve.
+Chapter 2 The Derivative
+Applied Calculus
+86
+The Derivative:
+The derivative of a function f at a point (x, f(x)) is the instantaneous rate of change.
+The derivative is the slope of the tangent line to the graph of f at the point (x, f(x)).
+The derivative is the slope of the curve f(x) at the point (x, f(x)).
+A function is called differentiable at (x, f(x)) if its derivative exists at (x, f(x)).
+Notation for the Derivative:
+The derivative of y = f(x) with respect to x is written as
+( )
+x
+f ‘
+(read aloud as “f prime of x”), or ‘y (“y prime”)
+or dx
+dy (read aloud as “dee why dee ex”), or dx
+df
+The notation that resembles a fraction is called Leibniz notation. It displays not only the
+name of the function (f or y), but also the name of the variable (in this case, x). It looks
+like a fraction because the derivative is a slope. In fact, this is simply
+x
+y
+∆
+∆ written in Roman
+letters instead of Greek letters.
+Verb forms:
+We find the derivative of a function, or take the derivative of a function, or differentiate
+a function.
+We use an adaptation of the dx
+dy notation to mean “find the derivative of f(x):”
+( )
+(
+)
+dx
+df
+x
+f
+dx
+d
+=
+Formal Algebraic Definition:
+(
+)
+( )
+h
+x
+f
+h
+x
+f
+x
+f
+h
+−
++
+=
+→0
+lim
+)
+(‘
+Practical Definition:
+The derivative can be approximated by looking at an average rate of change, or the slope of
+a secant line, over a very tiny interval. The tinier the interval, the closer this is to the true
+instantaneous rate of change, slope of the tangent line, or slope of the curve.
+Looking Ahead:
+We will have methods for computing exact values of derivatives from formulas soon. If
+the function is given to you as a table or graph, you will still need to approximate this way.
+This is the foundation for the rest of this chapter. It’s remarkable that such a simple idea (the slope
+of a tangent line) and such a simple definition (for the derivative f ‘ ) will lead to so many
+important ideas and applications.
+Chapter 2 The Derivative
+Applied Calculus
+87
+Example 3
+Find the slope of the tangent line to
+1
+( )
+f x
+x
+=
+when x = 3.
+The slope of the tangent line is the value of the derivative 𝑓′(3).
+1
+(3)
+3
+f
+=
+, and
+1
+(3
+)
+3
+f
+h
+h
++
+=
++
+Using the formal limit definition of the derivative,
+0
+0
+1
+1
+(3
+)
+(3)
+3
+3
+(3)
+lim
+lim
+h
+h
+f
+h
+f
+h
+f
+h
+h
+→
+→
+−
++
+−
++
+′
+=
+=
+We can simplify by giving the fractions a common denominator.
+0
+0
+0
+0
+0
+1
+3
+1 3
+3
+3
+3 3
+lim
+3
+3
+9
+3
+9
+3
+lim
+9
+3
+lim
+1
+lim 9
+3
+1
+lim 9
+3
+h
+h
+h
+h
+h
+h
+h
+h
+h
+h
+h
+h
+h
+h
+h
+h
+h
+h h
+h
+→
+→
+→
+→
+→
++
+⋅
+−
+⋅
++
++
++
+−
++
++
+=
+−
++
+=
+−
+=
+⋅
++
+−
+=
++
+We can evaluate this limit by direct substitution:
+0
+1
+1
+lim 9
+3
+9
+h
+h
+→
+−
+= −
++
+The slope of the tangent line to
+1
+( )
+f x
+x
+=
+at x = 3 is
+1
+9
+−
+The Derivative as a Function
+We now know how to find (or at least approximate) the derivative of a function for any x-value;
+this means we can think of the derivative as a function, too. The inputs are the same x’s; the output
+is the value of the derivative at that x value.
+Chapter 2 The Derivative
+Applied Calculus
+88
+Example 4
+Below is the graph of a function
+( )
+x
+f
+y =
+. We can use the information in the graph to fill in a
+table showing values of
+( )
+x
+f ‘
+:
+At various values of x, draw your best guess at the tangent line and measure its slope. You
+might have to extend your lines so you can read some points. In general, your estimate of the
+slope will be better if you choose points that are easy to read and far away from each other.
+Here are my estimates for a few values of x (parts of the tangent lines I used are shown):
+We can estimate the values of f’(x) at some non-integer values of x, too: f’(.5) ≈ 0.5 and
+f’(1.3) ≈ –0.3.
+We can even think about entire intervals. For
+example, if 0 &lt; x &lt; 1, then f(x) is increasing, all the
+slopes are positive, and so f’(x) is positive.
+The values of f’(x) definitely depend on the values
+of x , and f’(x) is a function of x. We can use the
+results in the table to help sketch the graph of f’(x) .
+x
+( )
+x
+f
+y =
+( )
+x
+f ‘
+= the estimated SLOPE
+of the tangent line to the curve
+at the point (
+)
+y
+x,
+.
+0
+0
+1
+1
+1
+0
+2
+0
+−1
+3
+−1
+0
+3.5
+0
+2
+4
+1
+1
+5
+2
+0.5
+Chapter 2 The Derivative
+Applied Calculus
+89
+Example 5
+Shown is the graph of the height h(t) of a rocket at time t. Sketch the graph of the velocity of
+the rocket at time t. (Velocity is the derivative of the height function, so it is the slope of the
+tangent to the graph of position or height.)
+We can estimate the slope of the function at several points. The lower graph below shows the
+velocity of the rocket. This is v(t) = h’(t).
+We can also find derivative functions algebraically using limits.
+Example 6
+Find
+(
+)
+2
+2
+4
+1
+d
+x
+x
+dx
+−
++
+Setting up the derivative using a limit,
+0
+(
+)
+( )
+( )
+lim
+h
+f x
+h
+f x
+f
+x
+h
+→
++
+−
+′
+=
+We will start by simplifying
+(
+)
+f x
+h
++
+.
+2
+(
+)
+2(
+)
+4(
+) 1
+f x
+h
+x
+h
+x
+h
++
+=
++
+−
++
+−
+Expand
+Chapter 2 The Derivative
+Applied Calculus
+90
+2
+2
+2
+2
+2(
+2
+)
+4(
+) 1
+2
+4
+2
+4
+4
+1
+x
+xh
+h
+x
+h
+x
+xh
+h
+x
+h
+=
++
++
+−
++
+−
+=
++
++
+−
+−
+−
+Now finding the limit,
+0
+(
+)
+( )
+( )
+lim
+h
+f x
+h
+f x
+f
+x
+h
+→
++
+−
+′
+=
+Substitute in the formulas
+(
+) (
+)
+2
+2
+2
+0
+2
+4
+2
+4
+4
+1
+2
+4
+1
+lim
+h
+x
+xh
+h
+x
+h
+x
+x
+h
+→
++
++
+−
+−
+−
+−
+−
+−
+=
+Now simplify
+2
+2
+2
+0
+2
+0
+2
+4
+2
+4
+4
+1 2
+4
+1
+lim
+4
+2
+4
+lim
+h
+h
+x
+xh
+h
+x
+h
+x
+x
+h
+xh
+h
+h
+h
+→
+→
++
++
+−
+−
+− −
++
++
+=
++
+−
+=
+(
+)
+(
+)
+0
+0
+4
+2
+4
+lim
+lim 4
+2
+4
+h
+h
+h
+x
+h
+h
+x
+h
+→
+→
++
+−
+=
+=
++
+−
+Factor out the h and simplify
+We can find the limit of this expression by direct substitution:
+(
+)
+0
+( )
+lim 4
+2
+4
+4
+4
+h
+f
+x
+x
+h
+x
+→
+′
+=
++
+−
+=
+−
+Notice that the derivative depends on x, and that this formula will tell us the slope of the tangent
+line to f at any value x. For example, if we wanted to know the tangent slope of f at x = 3, we
+would simply evaluate:
+(3)
+4 3
+4
+8
+f ′
+=
+⋅ −
+= .
+A formula for the derivative function is very powerful, but as you can see, calculating the
+derivative using the limit definition is very time consuming. In the next section, we will identify
+some patterns that will allow us to start building a set of rules for finding derivatives without
+needing the limit definition.
+Interpreting the Derivative
+So far we have emphasized the derivative as the slope of the line tangent to a graph. That
+interpretation is very visual and useful when examining the graph of a function, and we will
+continue to use it. Derivatives, however, are used in a wide variety of fields and applications, and
+some of these fields use other interpretations. The following are a few interpretations of the
+derivative that are commonly used.
+Chapter 2 The Derivative
+Applied Calculus
+91
+General
+Rate of Change: f ‘(x) is the rate of change of the function at x. If the units for x are
+years and the units for f(x) are people, then the units for df
+dx are
+people
+year , a rate of
+change in population.
+Graphical
+Slope: f ‘(x) is the slope of the line tangent to the graph of f at the point ( x, f(x) ).
+Physical
+Velocity: If f(x) is the position of an object at time x, then f ‘(x) is the velocity of the
+object at time x. If the units for x are hours and f(x) is distance measured in miles,
+then the units for f ‘(x) = df
+dx are
+miles
+hour , miles per hour, which is a measure of
+velocity.
+Acceleration: If f(x) is the velocity of an object at time x, then f ‘(x) is the acceleration of
+the object at time x. If the units are for x are hours and f(x) has the units miles
+hour ,
+then the units for the acceleration f ‘(x) =
+df
+dx are miles/hour
+hour
+=
+miles
+hour2 , miles per
+hour per hour.
+Business
+Marginal Cost, Marginal Revenue, and Marginal Profit: We’ll explore these terms in more
+depth later in the section. Basically, the marginal cost is approximately the additional
+cost of making one more object once we have already made x objects. If the units for
+x are bicycles and the units for f(x) are dollars, then the units for f ‘(x) = df
+dx
+are
+dollars
+bicycle , the cost per bicycle.
+In business contexts, the word “marginal” usually means the derivative or rate of change of
+some quantity.
+Example 7
+Suppose the demand curve for widgets was given by
+1
+( )
+D p
+p
+=
+, where D is the quantity of
+items widgets, in thousands, at a price of p dollars. Interpret the derivative of D at p = $3.
+Note that we calculated
+(3)
+D′
+earlier to be
+1
+(3)
+0.111
+9
+D′
+= −
+≈ −
+.
+Chapter 2 The Derivative
+Applied Calculus
+92
+Since D has units “thousands of widgets” and the units for p is dollars of price, the units for D′
+will be thousands of widgets
+dollar of price
+. In other words, it shows how the demand will change as the
+price increases.
+Specifically,
+(3)
+0.111
+D′
+≈ −
+tells us that when the price is $3, the demand will decrease by
+about 0.111 thousand items for every dollar the price increases.
+2.2 Exercises</p>
+<ol>
+  <li>What is the slope of the line through (3,9) and (x, y) for y = x2 and x = 2.97? x = 3.001?
+x = 3+h? What happens to this last slope when h is very small (close to 0)? Sketch the
+graph of y = x2 for x near 3.</li>
+  <li>What is the slope of the line through (–2,4) and (x, y) for y = x2 and x = –1.98? x = –
+2.03? x = –2+h? What happens to this last slope when h is very small (close to 0)? Sketch
+the graph of y = x2 for x near –2.</li>
+  <li>What is the slope of the line through (2,4) and (x, y) for y = x2 + x – 2 and x = 1.99?
+x = 2.004? x = 2+h? What happens to this last slope when h is very small? Sketch the
+graph of y = x2 + x – 2 for x near 2.</li>
+  <li>What is the slope of the line through (–1,–2) and (x, y) for y = x2 +x – 2 and x = –.98?
+x = –1.03? x = –1+h? What happens to this last slope when h is very small? Sketch the
+graph of y = x2 + x – 2 for x near –1.</li>
+  <li>The graph to the right shows the temperature
+during a day in Ames.
+(a) What was the average change in
+temperature from 9 am to 1 pm?
+(b) Estimate how fast the temperature was
+rising at 10 am and at 7 pm?
+Chapter 2 The Derivative
+Applied Calculus
+93</li>
+  <li>The graph shows the distance of a car from a measuring position located on the edge of a
+straight road.
+(a) What was the average velocity of the car
+from t = 0 to t = 30 seconds?
+(b) What was the average velocity of the car
+from t = 10 to t = 30 seconds?
+(c) About how fast was the car traveling at
+t = 10 seconds? at t = 20 s ? at t = 30 s
+?
+(d) What does the horizontal part of the
+graph between t = 15 and t = 20
+seconds mean?
+(e) What does the negative velocity at t =
+25 represent?</li>
+  <li>The graph shows the distance of a car from a
+measuring
+position located on the edge of a straight
+road.
+(a) What was the average velocity of the
+car from t = 0 to t = 20 seconds?
+(b) What was the average velocity from t
+= 10 to t = 30 seconds?
+(c) About how fast was the car traveling at t = 10
+seconds? at t = 20 s ? at t = 30 s ?</li>
+  <li>The graph shows the composite developmental skill
+level of chessmasters at different ages as determined
+by their performance against other chessmasters.
+(From “Rating Systems for Human Abilities”, by
+W.H. Batchelder and R.S. Simpson, 1988. UMAP
+Module 698.)
+(a)
+At what age is the “typical” chessmaster
+playing the best chess?
+(b)
+At approximately what age is the chessmaster’s skill level increasing most rapidly?
+(c)
+Describe the development of the “typical” chessmaster’s skill in words.
+(d)
+Sketch graphs which you think would reasonably describe the performance levels
+versus age for an athlete, a classical pianist, a rock singer, a mathematician, and a
+professional in your major field.
+Chapter 2 The Derivative
+Applied Calculus
+94</li>
+  <li>Use the function in the graph to fill in the table and then graph m(x).
+x
+y = f(x)
+m(x) = the estimated slope of the tangent
+line to y=f(x) at the point (x,y)
+0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+4.0</li>
+  <li>Use the function in the graph to fill in the table and then graph m(x).
+x
+y = g(x)
+m(x) = the estimated slope of the tangent
+line to y=g(x) at the point (x,y)
+0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+4.0</li>
+  <li>(a) At what values of x does the graph of f in the
+graph have a horizontal tangent line?
+(b) At what value(s) of x is the value of f the
+largest? smallest?
+(c) Sketch the graph of m(x) = the slope of the line
+tangent to the graph of f at the point (x,y).
+Chapter 2 The Derivative
+Applied Calculus
+95</li>
+  <li>(a) At what values of x does the graph of g have a
+horizontal tangent line?
+(b) At what value(s) of x is the value of g the
+largest? smallest?
+(c) Sketch the graph of m(x) = the slope of the line
+tangent to the graph of g at the point (x,y).</li>
+  <li>Match the situation descriptions with the corresponding time–velocity graph.
+(a) A car quickly leaving from a stop sign.
+(b) A car sedately leaving from a stop sign.
+(c) A student bouncing on a trampoline.
+(d) A ball thrown straight up.
+(e) A student confidently striding across
+campus to take a calculus test.
+(f) An unprepared student walking across
+campus to take a calculus test.
+For each function f(x) in problems 15 – 20,
+perform steps (a) – (d):
+(a) calculate msec =
+(
+)
+( )
+f x
+h
+f x
+h
++
+−
+and simplify (b) determine mtan =
+lim
+h→0 msec
+(c) evaluate mtan at x = 2 , (d) find the equation of the line tangent to the graph of f at (2, f(2) )</li>
+  <li>f(x) = 3x – 7</li>
+  <li>f(x) = 2 – 7x</li>
+  <li>f(x) = ax + b where a and b are constants</li>
+  <li>f(x) = x2 + 3x</li>
+  <li>f(x) = 8 – 3x2</li>
+  <li>f(x) = ax2 + bx + c where a, b and c are constants</li>
+  <li>Match the graphs of the three functions below with the graphs of their derivatives.
+Chapter 2 The Derivative
+Applied Calculus
+96
+22.
+Below are six graphs, three of which are derivatives of the other three. Match the functions
+with their derivatives.</li>
+  <li>The graph below shows the temperature during a summer day in Chicago. Sketch the graph of
+the rate at which the temperature is changing. (This is just the graph of the slopes of the lines
+which are tangent to the temperature graph.)</li>
+  <li>Fill in the table with the appropriate units for f ‘(x).
+units for x
+units for f(x)
+units for f ‘(x)
+hours
+miles
+people
+automobiles
+dollars
+pancakes
+days
+trout
+seconds
+miles per second
+seconds
+gallons
+study hours
+test points</li>
+  <li>If C(x) is the total cost, in millions, of producing x thousand items, interpret
+(4)
+2
+C′
+=
+.</li>
+  <li>Suppose P(t) is the number of individuals infected by a disease t days after it was first detected.
+Interpret
+(50)
+200
+P′
+= −
+.</li>
+</ol>
+
+<div class="end-matter">
+  <p>Based on <em><a href="http://www.opentextbookstore.com/details.php?id=14">Applied Calculus</a></em>, Chapter 2.2, by Calaway, Hoffman, and Lippman.<br />
+<a href="https://creativecommons.org/licenses/by/4.0/"><img src="https://licensebuttons.net/l/by/4.0/80x15.png" alt="license image" /></a> Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons CC-BY-4.0</a>.</p>
+</div>
+</div><div class="d-print-none"><footer class="article__footer"><!-- start custom article footer snippet -->
+
+<!-- end custom article footer snippet -->
+</footer>
+<div class="article__section-navigator clearfix"><div class="previous"><span></span><a href="/applied-calculus/m04-limits-continuity.html">04: Limits and Continuity</a></div><div class="next"><span></span><a href="/applied-calculus/m06-properties-of-derivatives.html">06: Properties of Derivatives</a></div></div></div>
+
+</div>
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    $(function() {
+      var $this ,$scroll;
+      var $articleContent = $('.js-article-content');
+      var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+      var scroll = hasSidebar ? '.js-page-main' : 'html, body';
+      $scroll = $(scroll);
+
+      $articleContent.find('.highlight').each(function() {
+        $this = $(this);
+        $this.attr('data-lang', $this.find('code').attr('data-lang'));
+      });
+      $articleContent.find('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]').each(function() {
+        $this = $(this);
+        $this.append($('<a class="anchor d-print-none" aria-hidden="true"></a>').html('<i class="fas fa-anchor"></i>'));
+      });
+      $articleContent.on('click', '.anchor', function() {
+        $scroll.scrollToAnchor('#' + $(this).parent().attr('id'), 400);
+      });
+    });
+  });
+})();
+</script>
+</div><section class="page__comments d-print-none"></section></article><!-- start custom main bottom snippet -->
+
+<!-- end custom main bottom snippet -->
+</div>
+            </div></div></div><div class="page__footer d-print-none"><footer class="footer py-4 js-page-footer">
+  <div class="main">
+    <!--<div itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content=""><meta itemprop="url" content="/"><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"></ul>
+</div>
+</div>
+    </div>
+    --><div class="site-info mt-2">
+      <div>WJT Mathematics,
+        Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a super customizable Jekyll theme." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </div>
+    </div>
+  </div>
+</footer>
+</div></div>
+    </div></div></div><script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $body = $('body'), $window = $(window);
+    var $pageRoot = $('.js-page-root'), $pageMain = $('.js-page-main');
+    var activeCount = 0;
+    function modal(options) {
+      var $root = this, visible, onChange, hideWhenWindowScroll = false;
+      var scrollTop;
+      function setOptions(options) {
+        var _options = options || {};
+        visible = _options.initialVisible === undefined ? false : show;
+        onChange = _options.onChange;
+        hideWhenWindowScroll = _options.hideWhenWindowScroll;
+      }
+      function init() {
+        setState(visible);
+      }
+      function setState(isShow) {
+        if (isShow === visible) {
+          return;
+        }
+        visible = isShow;
+        if (visible) {
+          activeCount++;
+          scrollTop = $(window).scrollTop() || $pageMain.scrollTop();
+          $root.addClass('modal--show');
+          $pageMain.scrollTop(scrollTop);
+          activeCount === 1 && ($pageRoot.addClass('show-modal'), $body.addClass('of-hidden'));
+          hideWhenWindowScroll && window.hasEvent('touchstart') && $window.on('scroll', hide);
+          $window.on('keyup', handleKeyup);
+        } else {
+          activeCount > 0 && activeCount--;
+          $root.removeClass('modal--show');
+          $window.scrollTop(scrollTop);
+          activeCount === 0 && ($pageRoot.removeClass('show-modal'), $body.removeClass('of-hidden'));
+          hideWhenWindowScroll && window.hasEvent('touchstart') && $window.off('scroll', hide);
+          $window.off('keyup', handleKeyup);
+        }
+        onChange && onChange(visible);
+      }
+      function show() {
+        setState(true);
+      }
+      function hide() {
+        setState(false);
+      }
+      function handleKeyup(e) {
+        // Char Code: 27  ESC
+        if (e.which ===  27) {
+          hide();
+        }
+      }
+      setOptions(options);
+      init();
+      return {
+        show: show,
+        hide: hide,
+        $el: $root
+      };
+    }
+    $.fn.modal = modal;
+  });
+})();
+</script><div class="modal modal--overflow page__search-modal d-print-none js-page-search-modal"></div></div>
+
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function scrollToAnchor(anchor, duration, callback) {
+      var $root = this;
+      $root.animate({ scrollTop: $(anchor).position().top }, duration, function() {
+        window.history.replaceState(null, '', window.location.href.split('#')[0] + anchor);
+        callback && callback();
+      });
+    }
+    $.fn.scrollToAnchor = scrollToAnchor;
+  });
+})();
+(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function affix(options) {
+      var $root = this, $window = $(window), $scrollTarget, $scroll,
+        offsetBottom = 0, scrollTarget = window, scroll = window.document, disabled = false, isOverallScroller = true,
+        rootTop, rootLeft, rootHeight, scrollBottom, rootBottomTop,
+        hasInit = false, curState;
+
+      function setOptions(options) {
+        var _options = options || {};
+        _options.offsetBottom && (offsetBottom = _options.offsetBottom);
+        _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+        _options.scroll && (scroll = _options.scroll);
+        _options.disabled !== undefined && (disabled = _options.disabled);
+        $scrollTarget = $(scrollTarget);
+        isOverallScroller = window.isOverallScroller($scrollTarget[0]);
+        $scroll = $(scroll);
+      }
+      function preCalc() {
+        top();
+        rootHeight = $root.outerHeight();
+        rootTop = $root.offset().top + (isOverallScroller ? 0 :  $scrollTarget.scrollTop());
+        rootLeft = $root.offset().left;
+      }
+      function calc(needPreCalc) {
+        needPreCalc && preCalc();
+        scrollBottom = $scroll.outerHeight() - offsetBottom - rootHeight;
+        rootBottomTop = scrollBottom - rootTop;
+      }
+      function top() {
+        if (curState !== 'top') {
+          $root.removeClass('fixed').css({
+            left: 0,
+            top: 0
+          });
+          curState = 'top';
+        }
+      }
+      function fixed() {
+        if (curState !== 'fixed') {
+          $root.addClass('fixed').css({
+            left: rootLeft + 'px',
+            top: 0
+          });
+          curState = 'fixed';
+        }
+      }
+      function bottom() {
+        if (curState !== 'bottom') {
+          $root.removeClass('fixed').css({
+            left: 0,
+            top: rootBottomTop + 'px'
+          });
+          curState = 'bottom';
+        }
+      }
+      function setState() {
+        var scrollTop = $scrollTarget.scrollTop();
+        if (scrollTop >= rootTop && scrollTop <= scrollBottom) {
+          fixed();
+        } else if (scrollTop < rootTop) {
+          top();
+        } else {
+          bottom();
+        }
+      }
+      function init() {
+        if(!hasInit) {
+          var interval, timeout;
+          calc(true); setState();
+          // run calc every 100 millisecond
+          interval = setInterval(function() {
+            calc();
+          }, 100);
+          timeout = setTimeout(function() {
+            clearInterval(interval);
+          }, 45000);
+          window.pageLoad.then(function() {
+            setTimeout(function() {
+              clearInterval(interval);
+              clearTimeout(timeout);
+            }, 3000);
+          });
+          $scrollTarget.on('scroll', function() {
+            disabled || setState();
+          });
+          $window.on('resize', function() {
+            disabled || (calc(true), setState());
+          });
+          hasInit = true;
+        }
+      }
+
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions,
+        refresh: function() {
+          calc(true, { animation: false }); setState();
+        }
+      };
+    }
+    $.fn.affix = affix;
+  });
+})();
+(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function toc(options) {
+      var $root = this, $window = $(window), $scrollTarget, $scroller, $tocUl = $('<ul class="toc toc--ellipsis"></ul>'), $tocLi, $headings, $activeLast, $activeCur,
+        selectors = 'h1,h2,h3', container = 'body', scrollTarget = window, scroller = 'html, body', disabled = false,
+        headingsPos, scrolling = false, hasRendered = false, hasInit = false;
+
+      function setOptions(options) {
+        var _options = options || {};
+        _options.selectors && (selectors = _options.selectors);
+        _options.container && (container = _options.container);
+        _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+        _options.scroller && (scroller = _options.scroller);
+        _options.disabled !== undefined && (disabled = _options.disabled);
+        $headings = $(container).find(selectors).filter('[id]');
+        $scrollTarget = $(scrollTarget);
+        $scroller = $(scroller);
+      }
+      function calc() {
+        headingsPos = [];
+        $headings.each(function() {
+          headingsPos.push(Math.floor($(this).position().top));
+        });
+      }
+      function setState(element, disabled) {
+        var scrollTop = $scrollTarget.scrollTop(), i;
+        if (disabled || !headingsPos || headingsPos.length < 1) { return; }
+        if (element) {
+          $activeCur = element;
+        } else {
+          for (i = 0; i < headingsPos.length; i++) {
+            if (scrollTop >= headingsPos[i]) {
+              $activeCur = $tocLi.eq(i);
+            } else {
+              $activeCur || ($activeCur = $tocLi.eq(i));
+              break;
+            }
+          }
+        }
+        $activeLast && $activeLast.removeClass('active');
+        ($activeLast = $activeCur).addClass('active');
+      }
+      function render() {
+        if(!hasRendered) {
+          $root.append($tocUl);
+          $headings.each(function() {
+            var $this = $(this);
+            $tocUl.append($('<li></li>').addClass('toc-' + $this.prop('tagName').toLowerCase())
+              .append($('<a></a>').text($this.text()).attr('href', '#' + $this.prop('id'))));
+          });
+          $tocLi = $tocUl.children('li');
+          $tocUl.on('click', 'a', function(e) {
+            e.preventDefault();
+            var $this = $(this);
+            scrolling = true;
+            setState($this.parent());
+            $scroller.scrollToAnchor($this.attr('href'), 400, function() {
+              scrolling = false;
+            });
+          });
+        }
+        hasRendered = true;
+      }
+      function init() {
+        var interval, timeout;
+        if(!hasInit) {
+          render(); calc(); setState(null, scrolling);
+          // run calc every 100 millisecond
+          interval = setInterval(function() {
+            calc();
+          }, 100);
+          timeout = setTimeout(function() {
+            clearInterval(interval);
+          }, 45000);
+          window.pageLoad.then(function() {
+            setTimeout(function() {
+              clearInterval(interval);
+              clearTimeout(timeout);
+            }, 3000);
+          });
+          $scrollTarget.on('scroll', function() {
+            disabled || setState(null, scrolling);
+          });
+          $window.on('resize', window.throttle(function() {
+            if (!disabled) {
+              render(); calc(); setState(null, scrolling);
+            }
+          }, 100));
+        }
+        hasInit = true;
+      }
+
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions
+      };
+    }
+    $.fn.toc = toc;
+  });
+})();
+/*(function () {
+
+})();*/
+</script><script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $pageMask = $('.js-page-mask');
+    var $pageRoot = $('.js-page-root');
+    var $sidebarShow = $('.js-sidebar-show');
+    var $sidebarHide = $('.js-sidebar-hide');
+
+    function freeze(e) {
+      if (e.target === $pageMask[0]) {
+        e.preventDefault();
+      }
+    }
+    function stopBodyScrolling(bool) {
+      if (bool === true) {
+        window.addEventListener('touchmove', freeze, { passive: false });
+      } else {
+        window.removeEventListener('touchmove', freeze, { passive: false });
+      }
+    }
+
+    $sidebarShow.on('click', function() {
+      stopBodyScrolling(true); $pageRoot.addClass('show-sidebar');
+    });
+    $sidebarHide.on('click', function() {
+      stopBodyScrolling(false); $pageRoot.removeClass('show-sidebar');
+    });
+  });
+})();
+</script><script>
+  window.Lazyload.js('https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js', function() {
+    mermaid.initialize({
+      startOnLoad: true
+    });
+    mermaid.init(undefined, '.language-mermaid');
+  });
+</script>
+
+    </div>
+    <script>(function () {
+  var $root = document.getElementsByClassName('root')[0];
+  if (window.hasEvent('touchstart')) {
+    $root.dataset.isTouch = true;
+    document.addEventListener('touchstart', function(){}, false);
+  }
+})();
+</script>
+  </body>
+</html>
+

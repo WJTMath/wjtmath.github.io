@@ -4,12 +4,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>03: Exponential and Logarithmic Functions - WJT Mathematics</title>
 
 <meta name="description" content="Description">
-<link rel="canonical" href="/applied-calculus/m03-exponential-logarithmic-functions.html"><link rel="alternate" type="application/rss+xml" title="WJT Mathematics" href="/"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+<link rel="canonical" href="/applied-calculus/m03-exponential-logarithmic-functions.html"><link rel="alternate" type="application/rss+xml" title="WJT Mathematics" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
 
 <meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
 
 <meta name="theme-color" content="#ffffff">
-<!-- end favicons snippet --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="" ><!-- start custom head snippets -->
+<!-- end favicons snippet --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" ><!-- start custom head snippets -->
 <script>
 window.MathJax = {
   loader: {
@@ -26,7 +26,7 @@ window.MathJax = {
     packages: {'[+]': ['noerrors']},
     macros: {
         /* RR: '\\mathbb{R}', */
-        ddx: ['\\frac{d#2}{d#1}',2,'x']
+        ddx: ['\\frac{d#2}{d#1}',2,'x'],
     }
   },
   svg: {
@@ -46,6 +46,7 @@ window.MathJax = {
 };
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script"></script>
+
 <script type="text/javascript" charset="UTF-8"
  src="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.1.0/jsxgraphcore.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.1.0/jsxgraph.css" />
@@ -57,15 +58,30 @@ JXG.merge(JXG.Options.board, {
   showNavigation: false,
   showFullscreen: true
 });
-Object.assign(JXG.Options.ticks, {
+JXG.merge(JXG.Options.ticks, {
   drawLabels: true,
   majorHeight: -1,
   strokeColor: '#cccccc'
 });
-JXG.Options.curve.strokeWidth = 2
+JXG.Options.curve.strokeWidth = 2;
+JXG.Options.elements.highlight = false;
 JXG.Options.slider.ticks.majorHeight = 0;
-JXG.Options.axis.ticks.label.highlight = false;
-JXG.Options.axis.highlight = false;
+
+// Custom styles and objects.
+JXG.WJT = {};
+JXG.WJT.point = {
+  strokeColor: 'blue',
+  fillColor: 'blue',
+  fixed: true,
+  scalable: true,
+  withLabel: false,
+  showInfobox: false,
+  zoom: true
+};
+JXG.WJT.openPoint = {
+  ...JXG.WJT.point,
+  fillColor: 'white'
+}
 </script>
 <!-- end custom head snippets -->
 <script>(function() {
@@ -283,21 +299,21 @@ JXG.Options.axis.highlight = false;
     var TEXT_VARIABLES = {
       version: '2.2.6',
       sources: {
-        font_awesome: '',
-        jquery: '',
-        leancloud_js_sdk: '',
-        chart: '',
+        font_awesome: 'https://use.fontawesome.com/releases/v5.0.13/css/all.css',
+        jquery: 'https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn.jsdelivr.net/npm/leancloud-storage@3.13.2/dist/av-min.js',
+        chart: 'https://cdn.bootcss.com/Chart.js/2.7.2/Chart.bundle.min.js',
         gitalk: {
-          js: '',
-          css: ''
+          js: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.css'
         },
-        valine: '',
-        mathjax: '',
-        mermaid: ''
+        valine: 'https://unpkg.com/valine/dist/Valine.min.js',
+        mathjax: 'https://cdn.bootcss.com/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML',
+        mermaid: 'https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js'
       },
       site: {
         toc: {
-          selectors: ''
+          selectors: 'h1,h2,h3'
         }
       },
       paths: {
@@ -321,7 +337,7 @@ JXG.Options.axis.highlight = false;
 
     <div class="grid page__grid">
 
-      <div class="page__sidebar d-print-none"><div class="sidebar-toc"><ul class="toc toc--navigator"><li class="toc-h1">Applied Calculus</li><li class="toc-h2"><a href="/">child</a></li><li class="toc-h1">Limits and Continuity</li><li class="toc-h2"><a href="/applied-calculus/m01-exponents-equations.html">01: Exponents and Equations</a></li><li class="toc-h2"><a href="/applied-calculus/m02-functions-graphing.html">02: Functions and Graphing</a></li><li class="toc-h2 active"><a href="/applied-calculus/m03-exponential-logarithmic-functions.html">03: Exponential and Logarithmic Functions</a></li><li class="toc-h2"><a href="/applied-calculus/m04-limits-continuity.html">04: Limits and Continuity</a></li><li class="toc-h2"><a href="/applied-calculus/m05-limits-and-derivatives.html">05: Limits and Derivatives</a></li><li class="toc-h2"><a href="/applied-calculus/m06-properties-of-derivatives.html">06: Properties of Derivatives</a></li><li class="toc-h2"><a href="/applied-calculus/m07-product-quotient-rules.html">07: Product and Quotient Rules</a></li><li class="toc-h2"><a href="/applied-calculus/m08-other-derivative-rules.html">08: Other Derivative Rules</a></li><li class="toc-h2"><a href="/applied-calculus/m09-implicit-differentiation.html">09: Implicit Differentiation</a></li><li class="toc-h2"><a href="/applied-calculus/m10-first-derivative-test.html">10: The First Derivative Test</a></li><li class="toc-h2"><a href="/applied-calculus/m11-business-applications.html">11: Business Applications of Derivatives</a></li><li class="toc-h2"><a href="/applied-calculus/m12-second-derivative-test.html">12: The Second Derivative Test</a></li><li class="toc-h2"><a href="/applied-calculus/m13-antiderivatives-integrals.html">13: Antiderivatives and Integrals</a></li><li class="toc-h2"><a href="/applied-calculus/m14-integraion-rules-substitution.html">14: Integration Rules and Substitution</a></li><li class="toc-h2"><a href="/applied-calculus/m15-area-integration.html">15: Area and Integration</a></li><li class="toc-h2"><a href="/applied-calculus/m16-integration-by-parts.html">16: Integration by Parts</a></li></ul></div></div><div class="page__main js-page-main has-aside cell cell--auto">
+      <div class="page__sidebar d-print-none"><div class="sidebar-toc"><ul class="toc toc--navigator"><li class="toc-h1">Applied Calculus</li><li class="toc-h2"><a href="/applied-calculus/">Course Home</a></li><li class="toc-h1">Functions and Limits</li><li class="toc-h2"><a href="/applied-calculus/m01-exponents-equations.html">01: Exponents and Equations</a></li><li class="toc-h2"><a href="/applied-calculus/m02-functions-graphing.html">02: Functions and Graphing</a></li><li class="toc-h2 active"><a href="/applied-calculus/m03-exponential-logarithmic-functions.html">03: Exponential and Logarithmic Functions</a></li><li class="toc-h2"><a href="/applied-calculus/m04-limits-continuity.html">04: Limits and Continuity</a></li><li class="toc-h1">The Derivative</li><li class="toc-h2"><a href="/applied-calculus/m05-the-derivative.html">05: Limits and Derivatives</a></li><li class="toc-h2"><a href="/applied-calculus/m06-properties-of-derivatives.html">06: Properties of Derivatives</a></li><li class="toc-h2"><a href="/applied-calculus/m07-product-quotient-rules.html">07: Product and Quotient Rules</a></li><li class="toc-h2"><a href="/applied-calculus/m08-other-derivative-rules.html">08: Other Derivative Rules</a></li><li class="toc-h1">Applications of Derivatives</li><li class="toc-h2"><a href="/applied-calculus/m09-implicit-differentiation.html">09: Implicit Differentiation</a></li><li class="toc-h2"><a href="/applied-calculus/m10-first-derivative-test.html">10: The First Derivative Test</a></li><li class="toc-h2"><a href="/applied-calculus/m11-business-applications.html">11: Business Applications of Derivatives</a></li><li class="toc-h2"><a href="/applied-calculus/m12-second-derivative-test.html">12: The Second Derivative Test</a></li><li class="toc-h1">The Integral</li><li class="toc-h2"><a href="/applied-calculus/m13-antiderivatives-integrals.html">13: Antiderivatives and Integrals</a></li><li class="toc-h2"><a href="/applied-calculus/m14-integraion-rules-substitution.html">14: Integration Rules and Substitution</a></li><li class="toc-h2"><a href="/applied-calculus/m15-area-integration.html">15: Area and Integration</a></li><li class="toc-h2"><a href="/applied-calculus/m16-integration-by-parts.html">16: Integration by Parts</a></li></ul></div></div><div class="page__main js-page-main has-aside cell cell--auto">
 
       <div class="page__main-inner"><div class="page__header d-print-none"><header class="header"><div class="main">
       <div class="header__title">
@@ -334,19 +350,55 @@ JXG.Options.axis.highlight = false;
 	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
 </svg>
 <a title="Description" href="/">WJT Mathematics</a></div></div><nav class="navigation">
-        <ul><li class="navigation__item"><a href="/applied-calculus/">Course Home</a></li></ul>
+        <ul><li class="navigation__item"><a href="/">Home</a></li></ul>
       </nav></div>
   </header>
 </div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
 
-              <div class="col-aside d-print-none js-col-aside"><aside class="page__aside js-page-aside">
+              <div class="col-aside d-print-none js-col-aside"><aside class="page__aside js-page-aside"><ul class="toc-aside toc toc--ellipsis"><li class="toc-h1"><a href="#exponential-and-logarithmic-functions">Exponential and Logarithmic Functions</a></li></ul>
 </aside></div>
 
               <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
 
 <!-- end custom main top snippet -->
-<article><header style="display:none;"><h1>03: Exponential and Logarithmic Functions</h1></header><meta itemprop="headline" content="03: Exponential and Logarithmic Functions"><div class="js-article-content"><h1 id="exponential-and-logarithmic-functions">Exponential and Logarithmic Functions</h1>
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>03: Exponential and Logarithmic Functions</h1></header></div><meta itemprop="headline" content="03: Exponential and Logarithmic Functions"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
 
+<!-- end custom article top snippet -->
+<div class="article__content" itemprop="articleBody"><h1 id="exponential-and-logarithmic-functions">Exponential and Logarithmic Functions</h1>
+
+</div><div class="d-print-none"><footer class="article__footer"><!-- start custom article footer snippet -->
+
+<!-- end custom article footer snippet -->
+</footer>
+<div class="article__section-navigator clearfix"><div class="previous"><span></span><a href="/applied-calculus/m02-functions-graphing.html">02: Functions and Graphing</a></div><div class="next"><span></span><a href="/applied-calculus/m04-limits-continuity.html">04: Limits and Continuity</a></div></div></div>
+
+</div>
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    $(function() {
+      var $this ,$scroll;
+      var $articleContent = $('.js-article-content');
+      var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+      var scroll = hasSidebar ? '.js-page-main' : 'html, body';
+      $scroll = $(scroll);
+
+      $articleContent.find('.highlight').each(function() {
+        $this = $(this);
+        $this.attr('data-lang', $this.find('code').attr('data-lang'));
+      });
+      $articleContent.find('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]').each(function() {
+        $this = $(this);
+        $this.append($('<a class="anchor d-print-none" aria-hidden="true"></a>').html('<i class="fas fa-anchor"></i>'));
+      });
+      $articleContent.on('click', '.anchor', function() {
+        $scroll.scrollToAnchor('#' + $(this).parent().attr('id'), 400);
+      });
+    });
+  });
+})();
+</script>
 </div><section class="page__comments d-print-none"></section></article><!-- start custom main bottom snippet -->
 
 <!-- end custom main bottom snippet -->
@@ -700,7 +752,7 @@ JXG.Options.axis.highlight = false;
   });
 })();
 </script><script>
-  window.Lazyload.js('', function() {
+  window.Lazyload.js('https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js', function() {
     mermaid.initialize({
       startOnLoad: true
     });
