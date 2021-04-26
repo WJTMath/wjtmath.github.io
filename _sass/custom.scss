@@ -1,3 +1,49 @@
+/* Meta-classes for formatting elements. */
+
+.example-label {
+	@extend .button;
+	@extend .button--success;
+	@extend .button--rounded;
+	@extend .button--sm;
+}
+
+.example-solution-label {
+	@extend .button;
+	@extend .button--outline-success;
+	@extend .button--rounded;
+	@extend .button--sm;
+}
+
+
+.exercise-label {
+	@extend .button;
+	@extend .button--primary;
+	@extend .button--rounded;
+	@extend .button--sm;
+}
+
+/* Additionial typography styles. */
+.end-matter {
+	margin-top: 1rem;
+	font-size: 0.7rem;
+	font-family: Menlo, Monaco, Consolas, Andale Mono, lucida console, Courier New, monospace;
+}
+
+.main ul, .main ol {
+	margin-left: 1.5rem;
+}
+
+.article__content table {
+	display: table;
+	width: auto;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+p.button {
+	margin: 0;
+}
+
 .jsxgraph {
     margin-bottom: 10px;
     padding-left: 0;
@@ -6,6 +52,7 @@
     border-radius: 1em;
 }
 
+/* Switch to a non-JS TOC plugin. */
 .page__main .col-aside > aside {
 	position: sticky;
 	top: 0

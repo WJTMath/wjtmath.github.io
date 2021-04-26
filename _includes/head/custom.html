@@ -15,7 +15,7 @@ window.MathJax = {
     packages: {'[+]': ['noerrors']},
     macros: {
         /* RR: '\\mathbb{R}', */
-        ddx: ['\\frac{d#2}{d#1}',2,'x']
+        ddx: ['\\frac{d#2}{d#1}',2,'x'],
     }
   },
   svg: {
@@ -35,6 +35,7 @@ window.MathJax = {
 };
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script"></script>
+
 <script type="text/javascript" charset="UTF-8"
  src="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.1.0/jsxgraphcore.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.1.0/jsxgraph.css" />
@@ -46,14 +47,29 @@ JXG.merge(JXG.Options.board, {
   showNavigation: false,
   showFullscreen: true
 });
-Object.assign(JXG.Options.ticks, {
+JXG.merge(JXG.Options.ticks, {
   drawLabels: true,
   majorHeight: -1,
   strokeColor: '#cccccc'
 });
-JXG.Options.curve.strokeWidth = 2
+JXG.Options.curve.strokeWidth = 2;
+JXG.Options.elements.highlight = false;
 JXG.Options.slider.ticks.majorHeight = 0;
-JXG.Options.axis.ticks.label.highlight = false;
-JXG.Options.axis.highlight = false;
+
+// Custom styles and objects.
+JXG.WJT = {};
+JXG.WJT.point = {
+  strokeColor: 'blue',
+  fillColor: 'blue',
+  fixed: true,
+  scalable: true,
+  withLabel: false,
+  showInfobox: false,
+  zoom: true
+};
+JXG.WJT.openPoint = {
+  ...JXG.WJT.point,
+  fillColor: 'white'
+}
 </script>
 <!-- end custom head snippets -->

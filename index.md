@@ -1,7 +1,7 @@
 ---
 title: Home
 sidebar:
-  nav: app-calc
+  nav: home
 ---
 
 This is a paragraph...

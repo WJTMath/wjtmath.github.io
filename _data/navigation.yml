@@ -1,13 +1,25 @@
 header:
-  - title: Course Home 
-    url: /applied-calculus/index.html
+  - title: Home 
+    url: /
+
+home:
+  - title: Home
+    url: /
+  - title: Courses
+    children:
+      - title: "MATH 1314: College Algebra"
+        url: /college-algebra/
+      - title: "MATH 1324: Business Math"
+        url: /business-math/
+      - title: "MATH 1325: Applied Calculus"
+        url: /applied-calculus/
 
 app-calc:
   - title: Applied Calculus
     children:
-      - title: child
-        url: /
-  - title: "Limits and Continuity"
+    - title: Course Home 
+      url: /applied-calculus/index.html
+  - title: Functions and Limits
     children:
       - title: '01: Exponents and Equations'
         url: /applied-calculus/m01-exponents-equations.html
@@ -17,14 +29,18 @@ app-calc:
         url: /applied-calculus/m03-exponential-logarithmic-functions.html
       - title: '04: Limits and Continuity'
         url: /applied-calculus/m04-limits-continuity.html
+  - title: The Derivative
+    children:
       - title: '05: Limits and Derivatives'
-        url: /applied-calculus/m05-limits-and-derivatives.html
+        url: /applied-calculus/m05-the-derivative.html
       - title: '06: Properties of Derivatives'
         url: /applied-calculus/m06-properties-of-derivatives.html
       - title: '07: Product and Quotient Rules'
         url: /applied-calculus/m07-product-quotient-rules.html
       - title: '08: Other Derivative Rules'
         url: /applied-calculus/m08-other-derivative-rules.html
+  - title: Applications of Derivatives
+    children:
       - title: '09: Implicit Differentiation'
         url: /applied-calculus/m09-implicit-differentiation.html
       - title: '10: The First Derivative Test'
@@ -33,6 +49,8 @@ app-calc:
         url: /applied-calculus/m11-business-applications.html
       - title: '12: The Second Derivative Test'
         url: /applied-calculus/m12-second-derivative-test.html
+  - title: The Integral
+    children:
       - title: '13: Antiderivatives and Integrals'
         url: /applied-calculus/m13-antiderivatives-integrals.html
       - title: '14: Integration Rules and Substitution'

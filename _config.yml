@@ -29,10 +29,9 @@ github_username: wjtmath
 
 # Build settings
 theme: jekyll-text-theme
-text_skin: default
-highlight_theme: default
-repository: wjtmath/wjtmath.github.io
+text_skin: spacelab
 lang: en
+repository: wjtmath/wjtmath.github.io
 timezone: America/Chicago
 defaults:
   -
@@ -47,12 +46,11 @@ defaults:
         toc: true
   -
     scope:
-      path: 'applied-calculus/'
+      path: 'applied-calculus'
     values:
+      layout: article
       sidebar:
         nav: app-calc
-
-license: CC-BY-4.0
 # MathJax is custom loaded later.
 mathjax: false
 mermaid: true
