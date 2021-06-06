@@ -48,14 +48,14 @@ Contrast these one-sided definitions of the limit with the definition above.
 By not requiring that both sides of the limit agree with one another, we can define a limit for "jumps" in the graph, like in the graph below.
 
 <div class="grid">
-<div class="jsxgraph" id="jxg_t1" style="width:200px; height:200px;">
-  <noscript><img src="assets/svg/test.svg"></noscript>
-</div> 
-<div class="cell cell--auto pl-3" markdown="1">
-  - \$$\displaystyle\lim_{x \to 1^{-}}{f(x)}=2$$
-  - \$$\displaystyle\lim_{x \to 1^{+}}{f(x)}=4$$
-  - $$\displaystyle\lim_{x \to 1}{f(x)}$$ does not exist.
-</div>
+  <div class="jsxgraph" id="jxg_t1" style="width:200px; height:200px;">
+    <noscript>Graph requires JavaScript to display.</noscript>
+  </div>
+  <div class="cell cell--auto pl-3" markdown="1">
+    - \$$\displaystyle\lim_{x \to 1^{-}}{f(x)}=2$$
+    - \$$\displaystyle\lim_{x \to 1^{+}}{f(x)}=4$$
+    - $$\displaystyle\lim_{x \to 1}{f(x)}$$ does not exist.
+  </div>
 </div>
 <script>
 {
@@ -92,24 +92,22 @@ If any of the three conditions are not met, the function is **discontinuous at $
 The graph below illustrates some of the different ways a function can behave at and near a point, and the table contains some numerical information about the function and its behavior.
 
 <div class="jsxgraph mx-auto" id="jxg_t2" style="width:400px; height:200px;">
-  <noscript><img src="assets/svg/test.svg"></noscript>
+  <noscript>Graph requires JavaScript to display.</noscript>
 </div>
 <script>
 {
-  let boardOpts = {
-    boundingbox: [-1,5,11,-1],
-  };
-  let b = JXG.JSXGraph.initBoard('jxg_t2',boardOpts);
+  let b = JXG.JSXGraph.initBoard('jxg_t2',{boundingbox: [-1,5,11,-1]});
   b.create('functiongraph',[(x)=>Math.sin(Math.PI/2*x)+2,-10,6]);
   b.create('functiongraph',[(x)=>2*Math.pow((x-6)/2,2)+1,6,8]);
   b.create('functiongraph',[(x)=>2*Math.pow((x-10)/2,2)+1,8,10]);
   b.create('functiongraph',[(x)=>1,10,15]);
-  b.create('circle',[[1,3],[1.1,3.1]],{fillColor:'blue'});
-  b.create('circle',[[4,2],[4.1,2.1]],{fillColor:'white'});
-  b.create('circle',[[4,1],[4.1,1.1]],{fillColor:'blue'});
-  b.create('circle',[[6,2],[6.1,2.1]],{fillColor:'blue'});
-  b.create('circle',[[6,1],[6.1,1.1]],{fillColor:'white'});
-  b.create('circle',[[8,3],[8.1,3.1]],{fillColor:'white'});
+  
+  [[1,3],[4,1],[6,2]].map(function(p) {
+    b.create('point',p,JXG.WJT.point);
+  });
+  [[4,2],[6,1],[8,3]].map(function(p) {
+    b.create('point',p,JXG.WJT.openPoint)
+  })
 }
 </script>
 
@@ -147,14 +145,14 @@ Use the graph of $$y=f(x)$$ below to determine the following limits:
 
 <div class="grid">
   <div class="cell cell--3" markdown="1">
-  - $$\displaystyle\lim_{x \to 1}{f(x)}$$&nbsp;
-  - $$\displaystyle\lim_{x \to 2}{f(x)}$$&nbsp;
-  - $$\displaystyle\lim_{x \to 3}{f(x)}$$&nbsp;
-  - $$\displaystyle\lim_{x \to 4}{f(x)}$$&nbsp;
+  - \$$\displaystyle\lim_{x \to 1}{f(x)}
+  - \$$\displaystyle\lim_{x \to 2}{f(x)}
+  - \$$\displaystyle\lim_{x \to 3}{f(x)}
+  - \$$\displaystyle\lim_{x \to 4}{f(x)}
   </div>
   <div class="cell cell--auto">
     <div class="jsxgraph" id="jxg_x1" style="width:200px; height:200px;">
-      <noscript><img src="assets/svg/test.svg"></noscript>
+      <noscript>Graph requires JavaScript to display.</noscript>
     </div>
   </div>
 </div>
@@ -273,7 +271,7 @@ Use the graph to evaluate the following limits.
 <div class="grid">
   <div class="cell">
     <div class="jsxgraph" id="jxg_p1" style="width:200px; height:200px;">
-      <noscript><img src="assets/svg/test.svg"></noscript>
+      <noscript>Graph requires JavaScript to display.</noscript>
     </div>
   </div>
   <div class="cell cell--auto pl-3" markdown="1">
@@ -313,7 +311,7 @@ Use the graph to evaluate the following limits.
 <div class="grid">
   <div class="cell">
     <div class="jsxgraph" id="jxg_p2" style="width:200px; height:200px;">
-      <noscript><img src="assets/svg/test.svg"></noscript>
+      <noscript>Graph requires JavaScript to display.</noscript>
     </div>
   </div>
   <div class="cell cell--auto pl-3" markdown="1">
@@ -372,7 +370,7 @@ Exercise 5
 At which points is the following function discontinuous?
 
 <div class="jsxgraph mx-auto" id="jxg_p5" style="width:400px; height:200px;">
-  <noscript><img src="assets/svg/test.svg"></noscript>
+  <noscript>Graph requires JavaScript to display.</noscript>
 </div>
 <script>
 {
@@ -404,7 +402,7 @@ Exercise 6
 At which points is the following function discontinuous?
 
 <div class="jsxgraph mx-auto" id="jxg_p6" style="width:300px; height:200px;">
-  <noscript><img src="assets/svg/test.svg"></noscript>
+  <noscript>Graph requires JavaScript to display.</noscript>
 </div>
 <script>
 {

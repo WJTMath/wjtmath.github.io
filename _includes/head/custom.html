@@ -71,5 +71,21 @@ JXG.WJT.openPoint = {
   ...JXG.WJT.point,
   fillColor: 'white'
 }
+
+// Custom methods.
+JXG.WJT.addPoints = function(board,pts,attrs) {
+  if (typeof pts.forEach !== 'function') {
+    console.error('Points must be an array of arrays. Given: '+(typeof pts));
+    return;
+  }
+
+  pts.forEach(function(p){
+    if (p.length != 2) {
+      console.error('Point length must be 2. Given: '+p.length);
+      return;
+    }
+    board.create('point',p,attrs)
+  });
+}
 </script>
 <!-- end custom head snippets -->

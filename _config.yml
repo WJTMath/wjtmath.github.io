@@ -21,9 +21,9 @@
 title: WJT Mathematics
 email: Westley.Trevino@gmail.com
 description: >-
-  Description
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+  Personal and professional site of Westley Trevino, math professor.
+baseurl: '' # the subpath of your site, e.g. /blog
+url: 'https://trevino.pw' # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: jekyllrb
 github_username: wjtmath
 
@@ -46,15 +46,17 @@ defaults:
         toc: true
   -
     scope:
+        path: 'college-algebra'
+    values:
+        layout: article
+        sidebar:
+            nav: college-algebra
+    scope:
       path: 'applied-calculus'
     values:
       layout: article
       sidebar:
         nav: app-calc
-# MathJax is custom loaded later.
-mathjax: false
-mermaid: true
-chart: false
 
 
 plugins:

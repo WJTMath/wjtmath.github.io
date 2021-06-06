@@ -14,6 +14,48 @@ home:
       - title: "MATH 1325: Applied Calculus"
         url: /applied-calculus/
 
+college-algebra:
+  - title: College Algebra
+    children:
+      - title: 'Course Home'
+        url: /college-algebra\index.html
+  - title: 'Algebra and Functions'
+    children:
+      - title: '01: '
+        url: /college-algebra\m01-arithmetic-algebra.html
+      - title: '02: '
+        url: /college-algebra\m02-equations-inequalities.html
+      - title: '03: '
+        url: /college-algebra\m03-functions-and-inverse-functions.html
+      - title: '04: '
+        url: /college-algebra\m04-linear-and-quadratic-functions.html
+  - title: 'Functions and Graphing'
+    children:
+      - title: '05: '
+        url: /college-algebra\m05-graphing-transformations.html
+      - title: '06: '
+        url: /college-algebra\m06-polynomial-functions.html
+      - title: '07: '
+        url: /college-algebra\m07-rational-functions.html
+      - title: '08: '
+        url: /college-algebra\m08-radical-functions.html
+  - title: 'Exponential and Logarithmic Functions'
+    children:
+      - title: '09: '
+        url: /college-algebra\m09-function-operations.html
+      - title: '10: '
+        url: /college-algebra\m10-exponential-functions.html
+      - title: '11: '
+        url: /college-algebra\m11-logarithmic-functions.html
+      - title: '12: '
+        url: /college-algebra\m12-exponential-and-logarithmic-equations.html
+  - title: 'Systems of Equations and Matrices'
+    children:
+      - title: '13: '
+        url: /college-algebra\m13-systems-of-linear-equations.html
+      - title: '14: '
+        url: /college-algebra\m14-gauss-jordan-elimination.html
+
 app-calc:
   - title: Applied Calculus
     children:

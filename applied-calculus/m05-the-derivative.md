@@ -2,34 +2,86 @@
 title: '05: The Derivative'
 ---
 
-## Prelude: Slope and Rate of Change
+## Slope and Rate of Change
 
-The slope of a linear function measures how quickly its value rises or falls as its inpul value changes.
-Graphically, this is measured as the change in vertical distance when moving from left to right along the line's graph.
+The slope of a function measures how quickly its value rises or falls as its inpul value changes.
+It is a *rate of change* which makes it an ideal tool for calculus.
+Slope can be a confusing concept at first because "how to calculate slope" and "what slope means" are different conversations.
+
+### How to Calculate Slope
+
+**Slope** is a ratio (fraction) of how much two values change in relation to one another.
+Slope is measured between two points, and is calculated in several ways.
+
+1. **Graphically**: slope equals "rise" over "run", or vertical distance divided by horizontal distance.
+2. **Algebraically**: "rise" and "run" are each the subtraction of two values.
+   If the points are $$(x_1,y_1)$$ and $$(x_2,y_2)$$ the "rise" is $$y_2-y_1$$ and the "run" is $$x_2-x_1$$.
+
+The **slope between two points** is measured Graphically, this is measured as the change in vertical distance when moving from left to right along the line's graph.
 Intuitively, you may be familial with the "rise over run" definition.
 Slopes are often fractions because of their definition, comparing (dividing) one amount of change by another.
 The graph below shows algebraic definition.
 
-<div class="jsxgraph mx-auto" id="jxg_t1" style="width:200px; height:200px;">
-  <noscript><img src="assets/svg/test.svg"></noscript>
+<div class="jsxgraph mx-auto" id="jxg_t1" style="width:300px; height:200px;">
+  <noscript>Graph requires JavaScript to display.</noscript>
 </div>
 <script>
 {
   let b = JXG.JSXGraph.initBoard('jxg_t1',{
-    boundingbox: [-1,9,9,-1],
+    boundingbox: [-1,9,14,-1],
     axis: false
   });
-  b.create('functiongraph',[(x)=>x,0,8]);
-  b.create('point',[3,3],JXG.WJT.point);
-  b.create('point',[3,5],JXG.WJT.openPoint);
-  b.create('circle',[[1,3],[1.1,3.1]],{fillColor:'blue'});
-  b.create('circle',[[4,2],[4.1,2.1]],{fillColor:'white'});
-  b.create('circle',[[4,1],[4.1,1.1]],{fillColor:'blue'});
-  b.create('circle',[[6,2],[6.1,2.1]],{fillColor:'blue'});
-  b.create('circle',[[6,1],[6.1,1.1]],{fillColor:'white'});
-  b.create('circle',[[8,3],[8.1,3.1]],{fillColor:'white'});
+
+  b.create('line',[[1,1],[7,7]]);
+  b.create('point',[1,1],{
+    ...JXG.WJT.point,
+    withLabel: true,
+    name: '\\((x_1,y_1)\\)',
+    label: {
+      useMathJax: true,
+      anchorX: 'right',
+      anchorY: 'bottom',
+    }
+  });
+  
+  b.create('point',[7,7],{
+    ...JXG.WJT.point,
+    withLabel: true,
+    name: '\\((x_2,y_2)\\)',
+    label: {
+      useMathJax: true,
+      anchorX: 'right',
+      anchorY: 'bottom',
+    }
+  });
+
+  b.create('segment',[[1,1],[7,1]], {
+    dash: 2,
+    strokeColor: '#777777',
+  });
+  b.create('arrow',[[1,0.5],[7,0.5]], {strokeColor: '#777777'});
+  b.create('text',[4,0.5,'run\\({}=x_2-x_1\\)'],{
+    parse: false,
+    useMathJax: true,
+    anchorX: 'middle',
+    anchorY: 'top',
+  })
+
+  b.create('segment',[[7,1],[7,7]], {
+    dash: 2,
+    strokeColor: '#777777',
+  });
+  b.create('arrow',[[7.5,1],[7.5,7]], {strokeColor: '#777777'});
+  b.create('text',[8,4,'rise\\({}=y_2-y_1\\)'],{
+    parse: false,
+    useMathJax: true,
+    anchorX: 'left',
+    anchorY: 'middle',
+  })
 }
 </script>
+
+$$\text{slope} = \frac{\text{rise}}{\text{run}}$$
 
 
 
