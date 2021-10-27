@@ -2630,7 +2630,7 @@ body, html, .root, .layout--page { height: 100%; }
 
 /* Meta-classes for formatting elements. */
 /* Additionial typography styles. */
-.end-matter { margin-top: 1rem; font-size: 0.7rem; font-family: Menlo, Monaco, Consolas, Andale Mono, lucida console, Courier New, monospace; }
+.end-matter { margin-top: 1rem; font-size: 0.7rem; font-family: Menlo, Monaco, Consolas, "Andale Mono", "Lucida Console", "Courier New", monospace; }
 
 .main ul, .main ol { margin-left: 1.5rem; }
 

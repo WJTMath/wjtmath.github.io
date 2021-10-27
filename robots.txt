@@ -1,1 +1,1 @@
-Sitemap: /sitemap.xml
+Sitemap: https://trevino.pw/sitemap.xml
