@@ -1,1 +1,0 @@
-# wjtmath.github.io
