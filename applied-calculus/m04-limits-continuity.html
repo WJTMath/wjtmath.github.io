@@ -1,0 +1,1237 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>04: Limits and Continuity - WJT Mathematics</title>
+
+<meta name="description" content="Personal and professional site of Westley Trevino, math professor.">
+<link rel="canonical" href="https://trevino.pw/applied-calculus/m04-limits-continuity.html"><link rel="alternate" type="application/rss+xml" title="WJT Mathematics" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+
+<meta name="theme-color" content="#ffffff">
+<!-- end favicons snippet --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" ><!-- start custom head snippets -->
+<script>
+window.MathJax = {
+  loader: {
+    load: ['input/asciimath', '[tex]/noerrors']
+  },
+  asciimath: {
+    delimiters: [['`','`']],
+    displaystyle: false
+  },
+  tex: {
+    inlineMath: [ ["\\(","\\)"] ],
+    displayMath: [ ["\\[","\\]"] ],
+    tags: 'none',
+    packages: {'[+]': ['noerrors']},
+    macros: {
+        /* RR: '\\mathbb{R}', */
+        ddx: ['\\frac{d#2}{d#1}',2,'x'],
+    }
+  },
+  svg: {
+    /* fontCache: 'global', */
+  },
+  options: {
+    menuOptions: {
+      settings: {
+        zoom: 'Click',
+        zscale: '200%',
+        collapsible: true
+      }
+    },
+    /*ignoreHtmlClass: 'tex2jax_ignore',
+    processHtmlClass: 'tex2jax_process'*/
+  }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script"></script>
+
+<script type="text/javascript" charset="UTF-8"
+ src="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.1.0/jsxgraphcore.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.1.0/jsxgraph.css" />
+<script>
+JXG.merge(JXG.Options.board, {
+  keepAspectRatio: true,
+  axis: true,
+  showCopyright: false,
+  showNavigation: false,
+  showFullscreen: true
+});
+JXG.merge(JXG.Options.ticks, {
+  drawLabels: true,
+  majorHeight: -1,
+  strokeColor: '#cccccc'
+});
+JXG.Options.curve.strokeWidth = 2;
+JXG.Options.elements.highlight = false;
+JXG.Options.slider.ticks.majorHeight = 0;
+
+// Custom styles and objects.
+JXG.WJT = {};
+JXG.WJT.point = {
+  strokeColor: 'blue',
+  fillColor: 'blue',
+  fixed: true,
+  scalable: true,
+  withLabel: false,
+  showInfobox: false,
+  zoom: true
+};
+JXG.WJT.openPoint = {
+  ...JXG.WJT.point,
+  fillColor: 'white'
+}
+
+// Custom methods.
+JXG.WJT.addPoints = function(board,pts,attrs) {
+  if (typeof pts.forEach !== 'function') {
+    console.error('Points must be an array of arrays. Given: '+(typeof pts));
+    return;
+  }
+
+  pts.forEach(function(p){
+    if (p.length != 2) {
+      console.error('Point length must be 2. Given: '+p.length);
+      return;
+    }
+    board.create('point',p,attrs)
+  });
+}
+</script>
+<!-- end custom head snippets -->
+<script>(function() {
+  window.isArray = function(val) {
+    return Object.prototype.toString.call(val) === '[object Array]';
+  };
+  window.isString = function(val) {
+    return typeof val === 'string';
+  };
+
+  window.hasEvent = function(event) {
+    return 'on'.concat(event) in window.document;
+  };
+
+  window.isOverallScroller = function(node) {
+    return node === document.documentElement || node === document.body || node === window;
+  };
+
+  window.isFormElement = function(node) {
+    var tagName = node.tagName;
+    return tagName === 'INPUT' || tagName === 'SELECT' || tagName === 'TEXTAREA';
+  };
+
+  window.pageLoad = (function () {
+    var loaded = false, cbs = [];
+    window.addEventListener('load', function () {
+      var i;
+      loaded = true;
+      if (cbs.length > 0) {
+        for (i = 0; i < cbs.length; i++) {
+          cbs[i]();
+        }
+      }
+    });
+    return {
+      then: function(cb) {
+        cb && (loaded ? cb() : (cbs.push(cb)));
+      }
+    };
+  })();
+})();
+(function() {
+  window.throttle = function(func, wait) {
+    var args, result, thisArg, timeoutId, lastCalled = 0;
+
+    function trailingCall() {
+      lastCalled = new Date;
+      timeoutId = null;
+      result = func.apply(thisArg, args);
+    }
+    return function() {
+      var now = new Date,
+        remaining = wait - (now - lastCalled);
+
+      args = arguments;
+      thisArg = this;
+
+      if (remaining <= 0) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+        lastCalled = now;
+        result = func.apply(thisArg, args);
+      } else if (!timeoutId) {
+        timeoutId = setTimeout(trailingCall, remaining);
+      }
+      return result;
+    };
+  };
+})();
+(function() {
+  var Set = (function() {
+    var add = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (data[i] === item) {
+          return;
+        }
+      }
+      this.size ++;
+      data.push(item);
+      return data;
+    };
+
+    var Set = function(data) {
+      this.size = 0;
+      this._data = [];
+      var i;
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          add.call(this, data[i]);
+        }
+      }
+    };
+    Set.prototype.add = add;
+    Set.prototype.get = function(index) { return this._data[index]; };
+    Set.prototype.has = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (this.get(i) === item) {
+          return true;
+        }
+      }
+      return false;
+    };
+    Set.prototype.is = function(map) {
+      if (map._data.length !== this._data.length) { return false; }
+      var i, j, flag, tData = this._data, mData = map._data;
+      for (i = 0; i < tData.length; i++) {
+        for (flag = false, j = 0; j < mData.length; j++) {
+          if (tData[i] === mData[j]) {
+            flag = true;
+            break;
+          }
+        }
+        if (!flag) { return false; }
+      }
+      return true;
+    };
+    Set.prototype.values = function() {
+      return this._data;
+    };
+    return Set;
+  })();
+
+  window.Lazyload = (function(doc) {
+    var queue = {js: [], css: []}, sources = {js: {}, css: {}}, context = this;
+    var createNode = function(name, attrs) {
+      var node = doc.createElement(name), attr;
+      for (attr in attrs) {
+        if (attrs.hasOwnProperty(attr)) {
+          node.setAttribute(attr, attrs[attr]);
+        }
+      }
+      return node;
+    };
+    var end = function(type, url) {
+      var s, q, qi, cbs, i, j, cur, val, flag;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        s[url] = true;
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (cur.urls.has(url)) {
+            qi = cur, val = qi.urls.values();
+            qi && (cbs = qi.callbacks);
+            for (flag = true, j = 0; j < val.length; j++) {
+              cur = val[j];
+              if (!s[cur]) {
+                flag = false;
+              }
+            }
+            if (flag && cbs && cbs.length > 0) {
+              for (j = 0; j < cbs.length; j++) {
+                cbs[j].call(context);
+              }
+              qi.load = true;
+            }
+          }
+        }
+      }
+    };
+    var load = function(type, urls, callback) {
+      var s, q, qi, node, i, cur,
+        _urls = typeof urls === 'string' ? new Set([urls]) : new Set(urls), val, url;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (_urls.is(cur.urls)) {
+            qi = cur;
+            break;
+          }
+        }
+        val = _urls.values();
+        if (qi) {
+          callback && (qi.load || qi.callbacks.push(callback));
+          callback && (qi.load && callback());
+        } else {
+          q.push({
+            urls: _urls,
+            callbacks: callback ? [callback] : [],
+            load: false
+          });
+          for (i = 0; i < val.length; i++) {
+            node = null, url = val[i];
+            if (s[url] === undefined) {
+              (type === 'js' ) && (node = createNode('script', { src: url }));
+              (type === 'css') && (node = createNode('link', { rel: 'stylesheet', href: url }));
+              if (node) {
+                node.onload = (function(type, url) {
+                  return function() {
+                    end(type, url);
+                  };
+                })(type, url);
+                (doc.head || doc.body).appendChild(node);
+                s[url] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+    return {
+      js: function(url, callback) {
+        load('js', url, callback);
+      },
+      css: function(url, callback) {
+        load('css', url, callback);
+      }
+    };
+  })(this.document);
+})();
+</script><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      version: '2.2.6',
+      sources: {
+        font_awesome: 'https://use.fontawesome.com/releases/v5.0.13/css/all.css',
+        jquery: 'https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn.jsdelivr.net/npm/leancloud-storage@3.13.2/dist/av-min.js',
+        chart: 'https://cdn.bootcss.com/Chart.js/2.7.2/Chart.bundle.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.css'
+        },
+        valine: 'https://unpkg.com/valine/dist/Valine.min.js',
+        mathjax: 'https://cdn.bootcss.com/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML',
+        mermaid: 'https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h1,h2,h3'
+        }
+      },
+      paths: {
+        search_js: '/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script>
+</head>
+  <body>
+    <div class="root" data-is-touch="false">
+      <div class="layout--page layout--page--sidebar clearfix js-page-root">
+  <div class="page__mask d-print-none js-page-mask js-sidebar-hide"></div>
+  <div class="page__viewport">
+    <div class="page__actions d-print-none">
+      <div class="button button--circle button--lg box-shadow-2 sidebar-button js-sidebar-show">
+        <i class="fas fa-bars icon--show"></i>
+      </div>
+    </div>
+
+    <div class="grid page__grid">
+
+      <div class="page__sidebar d-print-none"><div class="sidebar-toc"><ul class="toc toc--navigator"><li class="toc-h1">Applied Calculus</li><li class="toc-h2"><a href="/">Site Home</a></li><li class="toc-h2"><a href="/applied-calculus/">Course Home</a></li><li class="toc-h1">Functions and Limits</li><li class="toc-h2"><a href="/applied-calculus/m01-exponents-equations.html">01: Exponents and Equations</a></li><li class="toc-h2"><a href="/applied-calculus/m02-functions-graphing.html">02: Functions and Graphing</a></li><li class="toc-h2"><a href="/applied-calculus/m03-exponential-logarithmic-functions.html">03: Exponential and Logarithmic Functions</a></li><li class="toc-h2 active"><a href="/applied-calculus/m04-limits-continuity.html">04: Limits and Continuity</a></li><li class="toc-h1">The Derivative</li><li class="toc-h2"><a href="/applied-calculus/m05-the-derivative.html">05: Limits and Derivatives</a></li><li class="toc-h2"><a href="/applied-calculus/m06-properties-of-derivatives.html">06: Properties of Derivatives</a></li><li class="toc-h2"><a href="/applied-calculus/m07-product-quotient-rules.html">07: Product and Quotient Rules</a></li><li class="toc-h2"><a href="/applied-calculus/m08-other-derivative-rules.html">08: Other Derivative Rules</a></li><li class="toc-h1">Applications of Derivatives</li><li class="toc-h2"><a href="/applied-calculus/m09-implicit-differentiation.html">09: Implicit Differentiation</a></li><li class="toc-h2"><a href="/applied-calculus/m10-first-derivative-test.html">10: The First Derivative Test</a></li><li class="toc-h2"><a href="/applied-calculus/m11-business-applications.html">11: Business Applications of Derivatives</a></li><li class="toc-h2"><a href="/applied-calculus/m12-second-derivative-test.html">12: The Second Derivative Test</a></li><li class="toc-h1">The Integral</li><li class="toc-h2"><a href="/applied-calculus/m13-antiderivatives-integrals.html">13: Antiderivatives and Integrals</a></li><li class="toc-h2"><a href="/applied-calculus/m14-integraion-rules-substitution.html">14: Integration Rules and Substitution</a></li><li class="toc-h2"><a href="/applied-calculus/m15-area-integration.html">15: Area and Integration</a></li><li class="toc-h2"><a href="/applied-calculus/m16-integration-by-parts.html">16: Integration by Parts</a></li></ul></div></div><div class="page__main js-page-main has-aside cell cell--auto">
+
+      <div class="page__main-inner"><div class="page__header d-print-none"><header class="header"><div class="main">
+      <div class="header__title">
+        <div class="header__brand"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#515151;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
+</svg>
+<a title="Personal and professional site of Westley Trevino, math professor." href="/">WJT Mathematics</a></div></div><nav class="navigation">
+        <ul><li class="navigation__item"><a href="/">Home</a></li></ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
+
+              <div class="col-aside d-print-none js-col-aside"><aside class="page__aside js-page-aside"><ul class="toc-aside toc toc--ellipsis"><li class="toc-h2"><a href="#definition-of-a-limit">Definition of a Limit</a></li><li class="toc-h2"><a href="#one-sided-limits">One Sided Limits</a></li><li class="toc-h2"><a href="#continuity">Continuity</a></li><li class="toc-h2"><a href="#examples">Examples</a></li><li class="toc-h2"><a href="#exercises">Exercises</a></li></ul>
+</aside></div>
+
+              <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
+
+<!-- end custom main top snippet -->
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>04: Limits and Continuity</h1></header></div><meta itemprop="headline" content="04: Limits and Continuity"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+
+<!-- end custom article top snippet -->
+<div class="article__content" itemprop="articleBody"><p>The secant line slope approaches the tangent line slope as the interval between the two points gets smaller.
+The <strong>limit</strong> gives us a better language to describe this idea of “approaches.”</p>
+
+<p>TODO: GRAPH</p>
+
+<h2 id="definition-of-a-limit">Definition of a Limit</h2>
+
+<p>The limit of a function describes its behavior when the variable is near, <strong>but does not equal</strong>, a given number.
+If the values of \(f(x)\) get closer to some number \(L\) as the values of \(x\) get very close to (but not equal to) some number \(c\).
+No matter how close to \(L\) we need, there is always a number close to \(c\) that will get there.</p>
+
+<p>In words we say “the limit of \(f(x)\) as \(x\) approaches \(c\) is \(L\).”
+In math notation, this is written as \(\displaystyle\lim_{x \to c}{f(x)} = L\).</p>
+
+<p>Contrast how this new limit idea describes sometime a little different than the function definition before:</p>
+<ul>
+  <li>\(f(x)\) describes the behavior of \(f(x)\) <strong>at</strong> the point \(x=c\).</li>
+  <li>\(\displaystyle\lim_{x \to c}{f(x)}\) describes the behavior of \(f(x)\) <strong>near, but not at</strong>, the point \(x=c\).</li>
+</ul>
+
+<p>If we have a graph of the function near \(x=c\), it is usually easy to determine \(\displaystyle\lim_{x \to c}{f(x)}\).
+Using function tables it is not technically possible to satisfy the defifinition of the limit, but with a few very light assumptions we can get a good idea of what the limit idea looks like.</p>
+
+<p>TODO: Add table/formula disscussion?</p>
+
+<p class="success"><i class="fas fa-coffee"></i> Try: <a href="#example-1">Example 1</a>, <a href="#example-2">Example 2</a></p>
+
+<h2 id="one-sided-limits">One Sided Limits</h2>
+
+<p>Sometimes a function’s behavior at a place depends on the <em>direction</em> used to approach that place.
+For example, if you approach Niagara Falls from the upstream side, you will be 182 feet higher and have different worries than if you approach from the downstream side.
+Similarly, the value of a function near a point may depend on the direction used to approach that point.</p>
+
+<p>The <strong>left limit</strong> of \(f(x)\) as \(x\) approaches \(c\) is equal to \(L\) if the values of \(f(x)\) can get as close to \(L\) as desired when \(x\) is very close to, <strong>but to the left of</strong>  \(c\).
+That is, \(x&lt;c\).
+In math notation: \(\displaystyle\lim_{x \to c^{-}}{f(x)}=L\).
+The difference is small: \(c^{-}\) vs \(c\).</p>
+
+<p>The <strong>right limit</strong> of \(f(x)\) is the same definition as the left limit except that \(x\) must be very close to, <strong>but to the right of</strong> \(c\).
+That is, \(x&gt;c\).
+In math notation: \(\displaystyle\lim_{x \to c^{+}}{f(x)}=L\).
+The difference is small: \(c^{+}\) vs \(c\).</p>
+
+<p>Contrast these one-sided definitions of the limit with the definition above.
+By not requiring that both sides of the limit agree with one another, we can define a limit for “jumps” in the graph, like in the graph below.</p>
+
+<div class="grid">
+  <div class="jsxgraph" id="jxg_t1" style="width:200px; height:200px;">
+    <noscript>Graph requires JavaScript to display.</noscript>
+  </div>
+  <div class="cell cell--auto pl-3">
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- \$$\displaystyle\lim_{x \to 1^{-}}{f(x)}=2$$
+- \$$\displaystyle\lim_{x \to 1^{+}}{f(x)}=4$$
+- $$\displaystyle\lim_{x \to 1}{f(x)}$$ does not exist.
+</code></pre></div>    </div>
+  </div>
+</div>
+<script>
+{
+  let boardOpts = {
+    boundingbox: [-1,5,5,-1],
+  };
+  let b = JXG.JSXGraph.initBoard('jxg_t1',boardOpts);
+  b.create('functiongraph',[(x)=>x**2+1,-5,1]);
+  b.create('functiongraph',[(x)=>x+3,1,5]);
+  b.create('circle',[[1,2],[1.1,2.1]],{fillColor:'blue'});
+  b.create('circle',[[1,4],[1.1,4.1]],{fillColor:'white'});
+}
+</script>
+
+<p class="success"><i class="fas fa-coffee"></i> Try: <a href="#example-3">Example 3</a></p>
+
+<h2 id="continuity">Continuity</h2>
+
+<p>A function that is “well-behaved” and doesn’t have any breaks or jumps in it is called <strong>continuous</strong>.  More formally, its two-sided limit is equal to the function definition.</p>
+
+<p class="info">A function f is <strong>continuous at \(x=c\)</strong>  when \(\displaystyle\lim_{x \to c}{f(x)} = f(c)\).</p>
+
+<p>This short definition has a lot of nuance within it.
+Think of continuity as the combination of three conditions:</p>
+
+<ol>
+  <li>The function is defined: \(f(c)\)</li>
+  <li>The function’s limit is defined: \(\displaystyle\lim_{x \to c}{f(x)}\)</li>
+  <li>The definition is equal to the limit: \(f(c)=\displaystyle\lim_{x \to c}{f(x)}\)</li>
+</ol>
+
+<p>If any of the three conditions are not met, the function is <strong>discontinuous at \(x=c\)</strong>.</p>
+
+<p>The graph below illustrates some of the different ways a function can behave at and near a point, and the table contains some numerical information about the function and its behavior.</p>
+
+<div class="jsxgraph mx-auto" id="jxg_t2" style="width:400px; height:200px;">
+  <noscript>Graph requires JavaScript to display.</noscript>
+</div>
+<script>
+{
+  let b = JXG.JSXGraph.initBoard('jxg_t2',{boundingbox: [-1,5,11,-1]});
+  b.create('functiongraph',[(x)=>Math.sin(Math.PI/2*x)+2,-10,6]);
+  b.create('functiongraph',[(x)=>2*Math.pow((x-6)/2,2)+1,6,8]);
+  b.create('functiongraph',[(x)=>2*Math.pow((x-10)/2,2)+1,8,10]);
+  b.create('functiongraph',[(x)=>1,10,15]);
+  
+  [[1,3],[4,1],[6,2]].map(function(p) {
+    b.create('point',p,JXG.WJT.point);
+  });
+  [[4,2],[6,1],[8,3]].map(function(p) {
+    b.create('point',p,JXG.WJT.openPoint)
+  })
+}
+</script>
+
+<table class="mx-auto">
+  <thead>
+    <tr>
+      <th style="text-align: center">\(c\)</th>
+      <th style="text-align: center">\(f(c)\)</th>
+      <th style="text-align: center">\(\displaystyle\lim_{x \to c}{f(x)}\)</th>
+      <th style="text-align: center">continuous at \(c\)?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">yes</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">no</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">6</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">does not exist</td>
+      <td style="text-align: center">no</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">8</td>
+      <td style="text-align: center">undefined</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">no</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The table include information about the definition of the function \(f(x)\) at each point as well as its limit \(\displaystyle\lim_{x \to c}{f(x)}\) at several points.
+If the two are equal, the function is continuous at that point.</p>
+
+<p>The behavior at \(x=4\) and \(x=8\) show a <strong>hole</strong> in the graph.
+If that single point’s value could be redefined to make the function continious, like at \(x=4\), this is called a <strong>removable discontinuity</strong>.
+The behavior at \(x=6\) is called a <strong>jump discontinuity</strong> because the graph jumps between two values.</p>
+
+<p>Which functions are continuous?
+Most functions you have likely studied before are continuous: polynomial, radical, rational, exponential, and logarithmic functions are all continuous where they are defined.
+Moreover, any combination of continuous functions is also continuous.</p>
+
+<p>This property is helpful because the definition of continuity says that \(\displaystyle\lim_{x \to a}{f(x)}=f(a)\).
+The limit can be found by direct substitution (evaluating the function) if the function is continuous at \(a\).</p>
+
+<p class="success"><i class="fas fa-coffee"></i> Try: <a href="#example-4">Example 4</a></p>
+
+<h2 id="examples">Examples</h2>
+
+<p class="example-label">Example 1 <a name="example-1"></a></p>
+
+<p>Use the graph of \(y=f(x)\) below to determine the following limits:</p>
+
+<div class="grid">
+  <div class="cell cell--3">
+    <ul>
+      <li>$$\displaystyle\lim_{x \to 1}{f(x)}</li>
+      <li>$$\displaystyle\lim_{x \to 2}{f(x)}</li>
+      <li>$$\displaystyle\lim_{x \to 3}{f(x)}</li>
+      <li>$$\displaystyle\lim_{x \to 4}{f(x)}</li>
+    </ul>
+  </div>
+  <div class="cell cell--auto">
+    <div class="jsxgraph" id="jxg_x1" style="width:200px; height:200px;">
+      <noscript>Graph requires JavaScript to display.</noscript>
+    </div>
+  </div>
+</div>
+<script>
+  var boardOpts = {
+    boundingbox: [-1,5,5,-1]
+  };
+  var x1 = JXG.JSXGraph.initBoard('jxg_x1',boardOpts);
+
+  x1.create('spline',[[-1,0,1,2,3,4],[2,1,2,3,1,2]]);
+  x1.create('spline',[[4,4.5,5],[3,2.5,1]]);
+  x1.create('circle',[[1,2],[1.1,2.1]],{fillColor:'blue'});
+  x1.create('circle',[[2,3],[2.1,3.1]],{fillColor:'white'});
+  x1.create('circle',[[3,1],[3.1,1.1]],{fillColor:'white'});
+  x1.create('circle',[[3,2],[3.1,2.1]],{fillColor:'blue'});
+  x1.create('circle',[[4,1],[4.1,1.1]],{fillColor:'blue'});
+  x1.create('circle',[[4,2],[4.1,2.1]],{fillColor:'white'});
+  x1.create('circle',[[4,3],[4.1,3.1]],{fillColor:'white'});
+</script>
+
+<p class="example-solution-label">Solution 1</p>
+
+<p>(a)     f(x)  = 2 .<br />
+When  x  is very close to  1,  the values of  f(x) are very close to  y = 2.  In this example, it happens that  f(1) = 2, but that is irrelevant for the limit.  The only thing that matters is what happens for  x  close to 1 but  x ≠ 1.</p>
+
+<p>(b) f(2) is undefined, but we only care about the behavior of  f(x)  for  x  close to 2 and  not equal to 2.  When  x is close to 2, the values of  f(x)  are close to  3.  If we restrict  x  close enough to 2, the values of  y  will be as close to  3  as we want,  so     f(x) = 3.</p>
+
+<p>(c) When  x  is close to  3  (or as  x approaches the value  3), the values of  f(x) are close to  1 (or approach the value 1),  so    f(x) = 1.  For this limit it is completely irrelevant that  f(3) = 2,  We only care about what happens to  f(x)  for  x  close to and not equal to 3.</p>
+
+<p>(d) This one is harder and we need to be careful.  When  x  is close to  4 and slightly less than  4  (x  is just to the left of  4 on the  x–axis), then the values of  f(x)  are close to  2.  But if x is close to  4  and slightly larger than  4  then the values of  f(x)  are close to 3.   If we only know that  x  is very close to  4, then we cannot say whether  y = f(x)  will be close to  2  or close to  3 –– it depends on whether  x  is on the right or the left side of  4.  In this situation,  the  f(x)  values are not close to a single number so we say    f(x)   does not exist.  It is irrelevant that  f(4) = 1.  The limit, as  x  approaches 4, would still be undefined if  f(4)  was 3  or  2 or  anything else.</p>
+
+<p class="example-label">Example 2 <a name="example-2"></a></p>
+
+<p>Find \(\displaystyle\lim_{x \to 1}{\frac{2x^2-x-1}{x-1}}\).</p>
+
+<p class="example-solution-label">Solution 2 (v1)</p>
+
+<p>You might try to evaluate ( f(x) = \frac{2x^2-x-1}{x-1} ) at x = 1, but f(x) is not defined at x = 1.  It is tempting, but wrong, to conclude that this function does not have a limit as x approaches 1.</p>
+
+<p><strong>Using Tables</strong>:  Trying some “test” values for x  which get closer and closer to 1 from both the left and the right, we get</p>
+
+<p>TODO: TABLE</p>
+
+<p>The function f is not defined at x = 1, but when x is close to 1, the values of f(x) are getting very close to 3. We can get f(x) as close to 3 as we want by taking x very close to 1 so ( \lim_{x \to 1}{\frac{2x^2-x-1}{x-1}} = 3).</p>
+
+<p class="example-solution-label">Solution 2 (v2)</p>
+
+<p><strong>Using algebra</strong>:  We could have found the same result by noting that ( \frac{2x^2-x-1}{x-1} = 2x+1 ) as long as x ≠ 1.  (If x≠1, then  x–1 ≠ 0 so it is valid to divide the numerator and denominator by the factor  x–1.)  The (x \to 1 )  part of the limit means that x  is close to 1 <strong>but not equal to 1</strong>, so our division step is valid and ( \lim_{x \to 1}{\frac{2x^2-x-1}{x-1}} = \lim_{x \to 1}{2x+1} = 3 ), the correct answer.</p>
+
+<p class="example-solution-label">Solution 2 (v3)</p>
+
+<p><strong>Using a graph</strong>:  We can graph ( y = \frac{2x^2-x-1}{x-1} ) for  x  close to  1, and notice that whenever x  is close to  1, the values of  y = f(x) are close to 3. f is not defined at x = 1, so the graph has a hole above x = 1, but we only care about what f(x) is doing for x close to <strong>but not equal to</strong> 1.</p>
+
+<p class="example-label">Example 3 <a name="example-3"></a></p>
+
+<p>Evaluate the one sided limits of the function f(x) graphed here at x = 0 and x = 1.
+TODO: GRAPH</p>
+
+<p class="example-solution-label">Solution 3</p>
+
+<p>As x approach 0 from the //left//, the value of the function is getting closer to 1, so ( \lim_{x \to 0^{-}}{f(x)}= 1 ).</p>
+
+<p>As x approaches 0 from the right, the value of the function is getting closer to 2, so ( \lim_{x \to 0^{+}}{f(x)} = 2 ).</p>
+
+<p>Notice that since the limit from the left and limit from the right are different, the general limit, ( \lim_{x \to 0}{f(x)} ), does not exist.</p>
+
+<p>At x approaches 1 from either direction, the value of the function is approaching 1, so \lim_{x \to 1^{-}}{f(x)} = \lim_{x \to 1^{+}}{f(x)} = \lim_{x \to 1}{f(x)} = 1 ).</p>
+
+<p class="example-label">Example 4 <a name="example-4"></a></p>
+
+<p>Is is possible to evaluate these limits using continuity?
+If so, evaluate.
+If not, explain why not.</p>
+
+<ul>
+  <li class="py-1">\(\displaystyle\lim_{x \to 2}{(x^3-4x)}\)</li>
+  <li class="py-1">\(\displaystyle\lim_{x \to 2}{\frac{x-4}{x+3}}\)</li>
+  <li class="py-1">\(\displaystyle\lim_{x \to 2}{\frac{x-4}{x-2}}\)</li>
+</ul>
+
+<p class="example-solution-label">Solution 4</p>
+
+<p>a) The function is polynomial and defined for all values of \(x\).
+Find the limit by direct substitution:</p>
+
+\[\lim_{x \to 2}{(x^3-4x)} = (2)^3-4(2) = 0\]
+
+<p>b) The function is rational.
+It is not defined at \(x=-3\), but the limit is as \(x\) approaches 2.
+\(f(x)\) is defined and continuous at \(x=2\), so direct substitution is possible:</p>
+
+\[\lim_{x \to 2}{\frac{x-4}{x+3}} = \frac{(2)-4}{(2)+3} = -\frac{2}{5}\]
+
+<p>c) The function is rational.
+It is not defined or continuous at \(x=2\).
+Direct substitution cannot be used to find this limit.</p>
+
+<h2 id="exercises">Exercises</h2>
+
+<p class="exercise-label">Exercise 1</p>
+
+<p>Use the graph to evaluate the following limits.</p>
+
+<div class="grid">
+  <div class="cell">
+    <div class="jsxgraph" id="jxg_p1" style="width:200px; height:200px;">
+      <noscript>Graph requires JavaScript to display.</noscript>
+    </div>
+  </div>
+  <div class="cell cell--auto pl-3">
+    <ul>
+      <li>\(\displaystyle\lim_{x \to 1}{f(x)}\)</li>
+      <li>\(\displaystyle\lim_{x \to 2}{f(x)}\)</li>
+      <li>\(\displaystyle\lim_{x \to 3}{f(x)}\)</li>
+      <li>\(\displaystyle\lim_{x \to 4}{f(x)}\)</li>
+    </ul>
+  </div>
+</div>
+<script>
+{
+  let boardOpts = {
+    boundingbox: [-1,3,5,-3]
+  };
+  let b = JXG.JSXGraph.initBoard('jxg_p1',boardOpts);
+  b.create('spline',[[-1,0,1,2,2.4,3],[1,1.5,2,1,0,-1]]);
+  b.create('functiongraph', [(x)=>-Math.sqrt(x-3)+2,3,5]);
+
+  let op = [[2,1],[3,2],[3,-1],[4,1]];
+  op.forEach(function(p) {
+  	b.create('circle',[[p[0],p[1]],[p[0]+0.1,p[1]+0.1]],{fillColor:'white'});
+  });
+
+  let cp = [[1,2],[2,2],[3,1]];
+  cp.forEach(function(p) {
+  	b.create('circle',[[p[0],p[1]],[p[0]+0.1,p[1]+0.1]],{fillColor:'blue'});
+  });
+}
+</script>
+
+<p class="exercise-label">Exercise 2</p>
+
+<p>Use the graph to evaluate the following limits.</p>
+
+<div class="grid">
+  <div class="cell">
+    <div class="jsxgraph" id="jxg_p2" style="width:200px; height:200px;">
+      <noscript>Graph requires JavaScript to display.</noscript>
+    </div>
+  </div>
+  <div class="cell cell--auto pl-3">
+    <ul>
+      <li>\(\displaystyle\lim_{x \to 1}{f(x)}\)</li>
+      <li>\(\displaystyle\lim_{x \to 2}{f(x)}\)</li>
+      <li>\(\displaystyle\lim_{x \to 3}{f(x)}\)</li>
+      <li>\(\displaystyle\lim_{x \to 4}{f(x)}\)</li>
+    </ul>
+  </div>
+</div>
+<script>
+{
+  let boardOpts = {
+    boundingbox: [-1,3,5,-3]
+  };
+  let b = JXG.JSXGraph.initBoard('jxg_p2',boardOpts);
+  b.create('spline',[[-1,0,0.5,1,1.5,2],[0.5,1,1.3,1,0.7,1]]);
+  b.create('functiongraph', [(x)=>2,2,3]);
+  b.create('functiongraph', [(x)=>2*Math.abs(x-4),3,5]);
+
+  let op = [[1,1],[2,1],[3,2]];
+  op.forEach(function(p) {
+  	b.create('circle',[[p[0],p[1]],[p[0]+0.1,p[1]+0.1]],{fillColor:'white'});
+  });
+
+  let cp = [[2,2],[3,1],[4,0]];
+  cp.forEach(function(p) {
+  	b.create('circle',[[p[0],p[1]],[p[0]+0.1,p[1]+0.1]],{fillColor:'blue'});
+  });
+}
+</script>
+
+<p class="exercise-label">Exercise 3</p>
+
+<p>For the function \(f(x)=\dfrac{x^2+3x+3}{x-2}\), evaluate the following limits.</p>
+
+<ul>
+  <li>\(\displaystyle\lim_{x \to 1}{f(x)}\)</li>
+  <li>\(\displaystyle\lim_{x \to 2}{f(x)}\)</li>
+</ul>
+
+<p class="exercise-label">Exercise 4</p>
+
+<p>For the function \(f(x)=\dfrac{x+7}{x^2+9x+14}\), evaluate the following limits.</p>
+
+<ul>
+  <li>\(\displaystyle\lim_{x \to 0}{f(x)}\)</li>
+  <li>\(\displaystyle\lim_{x \to 3}{f(x)}\)</li>
+  <li>\(\displaystyle\lim_{x \to 4}{f(x)}\)</li>
+  <li>\(\displaystyle\lim_{x \to 7}{f(x)}\)</li>
+</ul>
+
+<p class="exercise-label">Exercise 5</p>
+
+<p>At which points is the following function discontinuous?</p>
+
+<div class="jsxgraph mx-auto" id="jxg_p5" style="width:400px; height:200px;">
+  <noscript>Graph requires JavaScript to display.</noscript>
+</div>
+<script>
+{
+  let boardOpts = {
+    boundingbox: [-2,4,8,-1]
+  };
+  let b = JXG.JSXGraph.initBoard('jxg_p5',boardOpts);
+  b.create('spline',[[-2,-1,-0.5,0],[0,2,1.5,3]]);
+  b.create('spline',[[0,0.5,1,2,2.5,2.8],[3,2,2.5,1.5,1,5]]);
+  b.create('functiongraph', [(x)=>-Math.pow(x-4,2)+2,3,5]);
+  b.create('functiongraph', [(x)=>-Math.pow(1.6,x-5)+3,5,9]);
+
+  let op = [[1,2.5],[5,2]];
+  op.forEach(function(p) {
+  	b.create('circle',[[p[0],p[1]],[p[0]+0.07,p[1]+0.07]],{fillColor:'white'});
+  });
+
+  let cp = [[-1,2],[0,3],[2,1.5],[3,1],[5,1]];
+  cp.forEach(function(p) {
+  	b.create('circle',[[p[0],p[1]],[p[0]+0.07,p[1]+0.07]],{fillColor:'blue'});
+  });
+}
+</script>
+
+<p class="exercise-label">Exercise 6</p>
+
+<p>At which points is the following function discontinuous?</p>
+
+<div class="jsxgraph mx-auto" id="jxg_p6" style="width:300px; height:200px;">
+  <noscript>Graph requires JavaScript to display.</noscript>
+</div>
+<script>
+{
+  let b = JXG.JSXGraph.initBoard('jxg_p6',{boundingbox: [-2,4,4,-1]});
+  b.create('functiongraph', [(x)=>-Math.cbrt(x+1)+2,-2,2]);
+  b.create('functiongraph', [(x)=>-Math.pow(x-2,2)+3,2,3]);
+  b.create('functiongraph', [(x)=>-Math.pow(x-4,2)+3,3,4]);
+  b.create('functiongraph', [(x)=>-x+7,4,6]);
+
+
+  let op = [[0,1],[2,-Math.cbrt(3)+2],[2,3]];
+  op.forEach(function(p) {
+  	b.create('circle',[[p[0],p[1]],[p[0]+0.07,p[1]+0.07]],{fillColor:'white'});
+  });
+
+  let cp = [[-1,2],[2,2],[4,3]]
+  cp.forEach(function(p) {
+  	b.create('circle',[[p[0],p[1]],[p[0]+0.07,p[1]+0.07]],{fillColor:'blue'});
+  });
+}
+</script>
+
+<p class="exercise-label">Exercise 7</p>
+
+<p>For each function, find at least one point where the function is discontinuous.
+Identify which of the three conditions of continuity is/are violated at that point.</p>
+
+<ul>
+  <li class="py-1">\(f(x)=\dfrac{x+5}{x-3}\)</li>
+  <li class="py-1">\(f(x)=\dfrac{x^2+x-6}{x-2}\)</li>
+  <li class="py-1">\(f(x)=\dfrac{x}{x}\)</li>
+  <li class="py-1">\(f(x)=\dfrac{\pi}{x^2-6x+9}\)</li>
+  <li class="py-1">\(f(x)=\ln(x^2)\)</li>
+</ul>
+
+<div class="end-matter">
+  <p>Based on <em><a href="http://www.opentextbookstore.com/details.php?id=14">Applied Calculus</a></em>, Chapter 2.1, by Calaway, Hoffman, and Lippman.<br />
+<a href="https://creativecommons.org/licenses/by/4.0/"><img src="https://licensebuttons.net/l/by/4.0/80x15.png" alt="license image" /></a> Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons CC-BY-4.0</a>.</p>
+</div>
+</div><div class="d-print-none"><footer class="article__footer"><!-- start custom article footer snippet -->
+
+<!-- end custom article footer snippet -->
+</footer>
+<div class="article__section-navigator clearfix"><div class="previous"><span></span><a href="/applied-calculus/m03-exponential-logarithmic-functions.html">03: Exponential and Logarithmic Functions</a></div><div class="next"><span></span><a href="/applied-calculus/m05-the-derivative.html">05: Limits and Derivatives</a></div></div></div>
+
+</div>
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    $(function() {
+      var $this ,$scroll;
+      var $articleContent = $('.js-article-content');
+      var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+      var scroll = hasSidebar ? '.js-page-main' : 'html, body';
+      $scroll = $(scroll);
+
+      $articleContent.find('.highlight').each(function() {
+        $this = $(this);
+        $this.attr('data-lang', $this.find('code').attr('data-lang'));
+      });
+      $articleContent.find('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]').each(function() {
+        $this = $(this);
+        $this.append($('<a class="anchor d-print-none" aria-hidden="true"></a>').html('<i class="fas fa-anchor"></i>'));
+      });
+      $articleContent.on('click', '.anchor', function() {
+        $scroll.scrollToAnchor('#' + $(this).parent().attr('id'), 400);
+      });
+    });
+  });
+})();
+</script>
+</div><section class="page__comments d-print-none"></section></article><!-- start custom main bottom snippet -->
+
+<!-- end custom main bottom snippet -->
+</div>
+            </div></div></div><div class="page__footer d-print-none"><footer class="footer py-4 js-page-footer">
+  <div class="main">
+    <!--<div itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content=""><meta itemprop="url" content="/"><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"></ul>
+</div>
+</div>
+    </div>
+    --><div class="site-info mt-2">
+      <div>WJT Mathematics,
+        Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a super customizable Jekyll theme." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </div>
+    </div>
+  </div>
+</footer>
+</div></div>
+    </div></div></div><script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $body = $('body'), $window = $(window);
+    var $pageRoot = $('.js-page-root'), $pageMain = $('.js-page-main');
+    var activeCount = 0;
+    function modal(options) {
+      var $root = this, visible, onChange, hideWhenWindowScroll = false;
+      var scrollTop;
+      function setOptions(options) {
+        var _options = options || {};
+        visible = _options.initialVisible === undefined ? false : show;
+        onChange = _options.onChange;
+        hideWhenWindowScroll = _options.hideWhenWindowScroll;
+      }
+      function init() {
+        setState(visible);
+      }
+      function setState(isShow) {
+        if (isShow === visible) {
+          return;
+        }
+        visible = isShow;
+        if (visible) {
+          activeCount++;
+          scrollTop = $(window).scrollTop() || $pageMain.scrollTop();
+          $root.addClass('modal--show');
+          $pageMain.scrollTop(scrollTop);
+          activeCount === 1 && ($pageRoot.addClass('show-modal'), $body.addClass('of-hidden'));
+          hideWhenWindowScroll && window.hasEvent('touchstart') && $window.on('scroll', hide);
+          $window.on('keyup', handleKeyup);
+        } else {
+          activeCount > 0 && activeCount--;
+          $root.removeClass('modal--show');
+          $window.scrollTop(scrollTop);
+          activeCount === 0 && ($pageRoot.removeClass('show-modal'), $body.removeClass('of-hidden'));
+          hideWhenWindowScroll && window.hasEvent('touchstart') && $window.off('scroll', hide);
+          $window.off('keyup', handleKeyup);
+        }
+        onChange && onChange(visible);
+      }
+      function show() {
+        setState(true);
+      }
+      function hide() {
+        setState(false);
+      }
+      function handleKeyup(e) {
+        // Char Code: 27  ESC
+        if (e.which ===  27) {
+          hide();
+        }
+      }
+      setOptions(options);
+      init();
+      return {
+        show: show,
+        hide: hide,
+        $el: $root
+      };
+    }
+    $.fn.modal = modal;
+  });
+})();
+</script><div class="modal modal--overflow page__search-modal d-print-none js-page-search-modal"></div></div>
+
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function scrollToAnchor(anchor, duration, callback) {
+      var $root = this;
+      $root.animate({ scrollTop: $(anchor).position().top }, duration, function() {
+        window.history.replaceState(null, '', window.location.href.split('#')[0] + anchor);
+        callback && callback();
+      });
+    }
+    $.fn.scrollToAnchor = scrollToAnchor;
+  });
+})();
+(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function affix(options) {
+      var $root = this, $window = $(window), $scrollTarget, $scroll,
+        offsetBottom = 0, scrollTarget = window, scroll = window.document, disabled = false, isOverallScroller = true,
+        rootTop, rootLeft, rootHeight, scrollBottom, rootBottomTop,
+        hasInit = false, curState;
+
+      function setOptions(options) {
+        var _options = options || {};
+        _options.offsetBottom && (offsetBottom = _options.offsetBottom);
+        _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+        _options.scroll && (scroll = _options.scroll);
+        _options.disabled !== undefined && (disabled = _options.disabled);
+        $scrollTarget = $(scrollTarget);
+        isOverallScroller = window.isOverallScroller($scrollTarget[0]);
+        $scroll = $(scroll);
+      }
+      function preCalc() {
+        top();
+        rootHeight = $root.outerHeight();
+        rootTop = $root.offset().top + (isOverallScroller ? 0 :  $scrollTarget.scrollTop());
+        rootLeft = $root.offset().left;
+      }
+      function calc(needPreCalc) {
+        needPreCalc && preCalc();
+        scrollBottom = $scroll.outerHeight() - offsetBottom - rootHeight;
+        rootBottomTop = scrollBottom - rootTop;
+      }
+      function top() {
+        if (curState !== 'top') {
+          $root.removeClass('fixed').css({
+            left: 0,
+            top: 0
+          });
+          curState = 'top';
+        }
+      }
+      function fixed() {
+        if (curState !== 'fixed') {
+          $root.addClass('fixed').css({
+            left: rootLeft + 'px',
+            top: 0
+          });
+          curState = 'fixed';
+        }
+      }
+      function bottom() {
+        if (curState !== 'bottom') {
+          $root.removeClass('fixed').css({
+            left: 0,
+            top: rootBottomTop + 'px'
+          });
+          curState = 'bottom';
+        }
+      }
+      function setState() {
+        var scrollTop = $scrollTarget.scrollTop();
+        if (scrollTop >= rootTop && scrollTop <= scrollBottom) {
+          fixed();
+        } else if (scrollTop < rootTop) {
+          top();
+        } else {
+          bottom();
+        }
+      }
+      function init() {
+        if(!hasInit) {
+          var interval, timeout;
+          calc(true); setState();
+          // run calc every 100 millisecond
+          interval = setInterval(function() {
+            calc();
+          }, 100);
+          timeout = setTimeout(function() {
+            clearInterval(interval);
+          }, 45000);
+          window.pageLoad.then(function() {
+            setTimeout(function() {
+              clearInterval(interval);
+              clearTimeout(timeout);
+            }, 3000);
+          });
+          $scrollTarget.on('scroll', function() {
+            disabled || setState();
+          });
+          $window.on('resize', function() {
+            disabled || (calc(true), setState());
+          });
+          hasInit = true;
+        }
+      }
+
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions,
+        refresh: function() {
+          calc(true, { animation: false }); setState();
+        }
+      };
+    }
+    $.fn.affix = affix;
+  });
+})();
+(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function toc(options) {
+      var $root = this, $window = $(window), $scrollTarget, $scroller, $tocUl = $('<ul class="toc toc--ellipsis"></ul>'), $tocLi, $headings, $activeLast, $activeCur,
+        selectors = 'h1,h2,h3', container = 'body', scrollTarget = window, scroller = 'html, body', disabled = false,
+        headingsPos, scrolling = false, hasRendered = false, hasInit = false;
+
+      function setOptions(options) {
+        var _options = options || {};
+        _options.selectors && (selectors = _options.selectors);
+        _options.container && (container = _options.container);
+        _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+        _options.scroller && (scroller = _options.scroller);
+        _options.disabled !== undefined && (disabled = _options.disabled);
+        $headings = $(container).find(selectors).filter('[id]');
+        $scrollTarget = $(scrollTarget);
+        $scroller = $(scroller);
+      }
+      function calc() {
+        headingsPos = [];
+        $headings.each(function() {
+          headingsPos.push(Math.floor($(this).position().top));
+        });
+      }
+      function setState(element, disabled) {
+        var scrollTop = $scrollTarget.scrollTop(), i;
+        if (disabled || !headingsPos || headingsPos.length < 1) { return; }
+        if (element) {
+          $activeCur = element;
+        } else {
+          for (i = 0; i < headingsPos.length; i++) {
+            if (scrollTop >= headingsPos[i]) {
+              $activeCur = $tocLi.eq(i);
+            } else {
+              $activeCur || ($activeCur = $tocLi.eq(i));
+              break;
+            }
+          }
+        }
+        $activeLast && $activeLast.removeClass('active');
+        ($activeLast = $activeCur).addClass('active');
+      }
+      function render() {
+        if(!hasRendered) {
+          $root.append($tocUl);
+          $headings.each(function() {
+            var $this = $(this);
+            $tocUl.append($('<li></li>').addClass('toc-' + $this.prop('tagName').toLowerCase())
+              .append($('<a></a>').text($this.text()).attr('href', '#' + $this.prop('id'))));
+          });
+          $tocLi = $tocUl.children('li');
+          $tocUl.on('click', 'a', function(e) {
+            e.preventDefault();
+            var $this = $(this);
+            scrolling = true;
+            setState($this.parent());
+            $scroller.scrollToAnchor($this.attr('href'), 400, function() {
+              scrolling = false;
+            });
+          });
+        }
+        hasRendered = true;
+      }
+      function init() {
+        var interval, timeout;
+        if(!hasInit) {
+          render(); calc(); setState(null, scrolling);
+          // run calc every 100 millisecond
+          interval = setInterval(function() {
+            calc();
+          }, 100);
+          timeout = setTimeout(function() {
+            clearInterval(interval);
+          }, 45000);
+          window.pageLoad.then(function() {
+            setTimeout(function() {
+              clearInterval(interval);
+              clearTimeout(timeout);
+            }, 3000);
+          });
+          $scrollTarget.on('scroll', function() {
+            disabled || setState(null, scrolling);
+          });
+          $window.on('resize', window.throttle(function() {
+            if (!disabled) {
+              render(); calc(); setState(null, scrolling);
+            }
+          }, 100));
+        }
+        hasInit = true;
+      }
+
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions
+      };
+    }
+    $.fn.toc = toc;
+  });
+})();
+/*(function () {
+
+})();*/
+</script><script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $pageMask = $('.js-page-mask');
+    var $pageRoot = $('.js-page-root');
+    var $sidebarShow = $('.js-sidebar-show');
+    var $sidebarHide = $('.js-sidebar-hide');
+
+    function freeze(e) {
+      if (e.target === $pageMask[0]) {
+        e.preventDefault();
+      }
+    }
+    function stopBodyScrolling(bool) {
+      if (bool === true) {
+        window.addEventListener('touchmove', freeze, { passive: false });
+      } else {
+        window.removeEventListener('touchmove', freeze, { passive: false });
+      }
+    }
+
+    $sidebarShow.on('click', function() {
+      stopBodyScrolling(true); $pageRoot.addClass('show-sidebar');
+    });
+    $sidebarHide.on('click', function() {
+      stopBodyScrolling(false); $pageRoot.removeClass('show-sidebar');
+    });
+  });
+})();
+</script>
+    </div>
+    <script>(function () {
+  var $root = document.getElementsByClassName('root')[0];
+  if (window.hasEvent('touchstart')) {
+    $root.dataset.isTouch = true;
+    document.addEventListener('touchstart', function(){}, false);
+  }
+})();
+</script>
+  </body>
+</html>
+
