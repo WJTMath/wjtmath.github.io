@@ -48,19 +48,33 @@ defaults:
     scope:
         path: 'college-algebra'
     values:
-        layout: article
-        sidebar:
-            nav: college-algebra
+      layout: article
+      sidebar:
+        nav: college-algebra
+  -
+    scope:
+        path: 'business-math'
+    values:
+      layout: article
+      sidebar:
+        nav: business-math
+  -
     scope:
       path: 'applied-calculus'
     values:
       layout: article
       sidebar:
-        nav: app-calc
+        nav: applied-calculus
+  -
+    scope:
+      path: 'calculus-1'
+    values:
+      layout: article
+      sidebar:
+        nav: 'calculus-1'
 
-
-plugins:
-  - jekyll-feed
+# plugins:
+#  - jekyll-feed
 
 # Exclude from processing.
 # The following items will not be processed, by default.

@@ -93,12 +93,10 @@ Oftentimes a graph of a relationship can be used to define a function. By conven
 <panel title="Example 5">
 Which of these graphs defines a function \( y=f(x) \)?
 
-<div class="container-fluid">
-  <div class="row">
-    <div id="jxg_x5a" class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-0 jsxgraph" style="height:200px; min-width: 200px;"></div>
-    <div id="jxg_x5b" class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-0 jsxgraph" style="height:200px; min-width: 200px;"></div>
-    <div id="jxg_x5c" class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-0 jsxgraph" style="height:200px; min-width: 200px;"></div>
-  </div>
+<div class="grid">
+  <div id="jxg_x5a" class="cell cell--4 jsxgraph" style="height:200px; min-width: 200px;"></div>
+  <div id="jxg_x5b" class="cell cell--4 jsxgraph" style="height:200px; min-width: 200px;"></div>
+  <div id="jxg_x5c" class="cell cell--4 jsxgraph" style="height:200px; min-width: 200px;"></div>
 </div>
 <script type="text/javascript">
 var boardOpts = {

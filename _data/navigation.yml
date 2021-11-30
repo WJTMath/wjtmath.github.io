@@ -1,66 +1,84 @@
 header:
-  - title: Home 
+  - title: Home
     url: /
 
 home:
   - title: Home
-    url: /
+    children:
+      - title: Site Home
+        url: /
+      - title: 'MyOpenMath Tools'
+        url: /momtools.html
   - title: Courses
     children:
-      - title: "MATH 1314: College Algebra"
+      - title: 'M1314: College Algebra'
         url: /college-algebra/
-      - title: "MATH 1324: Business Math"
+      - title: 'M1324: Business Math'
         url: /business-math/
-      - title: "MATH 1325: Applied Calculus"
+      - title: 'M1325: Applied Calculus'
         url: /applied-calculus/
+      - title: 'M2413: Calculus 1'
+        url: /calculus-1/
 
 college-algebra:
   - title: College Algebra
     children:
+      - title: Site Home
+        url: /
       - title: 'Course Home'
-        url: /college-algebra\index.html
+        url: /college-algebra/
   - title: 'Algebra and Functions'
     children:
-      - title: '01: '
-        url: /college-algebra\m01-arithmetic-algebra.html
-      - title: '02: '
-        url: /college-algebra\m02-equations-inequalities.html
-      - title: '03: '
-        url: /college-algebra\m03-functions-and-inverse-functions.html
-      - title: '04: '
-        url: /college-algebra\m04-linear-and-quadratic-functions.html
+      - title: '01: Arithmetic and Algebra'
+        url: /college-algebra/m01-arithmetic-algebra.html
+      - title: '02: Equations and Inequalities'
+        url: /college-algebra/m02-equations-inequalities.html
+      - title: '03: Functions and Inverse Functions'
+        url: /college-algebra/m03-functions-and-inverse-functions.html
+      - title: '04: Linear and Quadratic Functions'
+        url: /college-algebra/m04-linear-and-quadratic-functions.html
   - title: 'Functions and Graphing'
     children:
-      - title: '05: '
-        url: /college-algebra\m05-graphing-transformations.html
-      - title: '06: '
-        url: /college-algebra\m06-polynomial-functions.html
-      - title: '07: '
-        url: /college-algebra\m07-rational-functions.html
-      - title: '08: '
-        url: /college-algebra\m08-radical-functions.html
+      - title: '05: Graphing Transformations'
+        url: /college-algebra/m05-graphing-transformations.html
+      - title: '06: Polynomial Functions'
+        url: /college-algebra/m06-polynomial-functions.html
+      - title: '07: Rational Functions'
+        url: /college-algebra/m07-rational-functions.html
+      - title: '08: Radical Functions'
+        url: /college-algebra/m08-radical-functions.html
   - title: 'Exponential and Logarithmic Functions'
     children:
-      - title: '09: '
-        url: /college-algebra\m09-function-operations.html
-      - title: '10: '
-        url: /college-algebra\m10-exponential-functions.html
-      - title: '11: '
-        url: /college-algebra\m11-logarithmic-functions.html
-      - title: '12: '
-        url: /college-algebra\m12-exponential-and-logarithmic-equations.html
+      - title: '09: Function Operations'
+        url: /college-algebra/m09-function-operations.html
+      - title: '10: Exponential Functions'
+        url: /college-algebra/m10-exponential-functions.html
+      - title: '11: Logarithmic Functions'
+        url: /college-algebra/m11-logarithmic-functions.html
+      - title: '12: Exponential and Logarithmic Equations'
+        url: /college-algebra/m12-exponential-and-logarithmic-equations.html
   - title: 'Systems of Equations and Matrices'
     children:
-      - title: '13: '
-        url: /college-algebra\m13-systems-of-linear-equations.html
-      - title: '14: '
-        url: /college-algebra\m14-gauss-jordan-elimination.html
+      - title: '13: Systems of Linear Equations'
+        url: /college-algebra/m13-systems-of-linear-equations.html
+      - title: '14: Gauss-Jordan Elimination'
+        url: /college-algebra/m14-gauss-jordan-elimination.html
 
-app-calc:
-  - title: Applied Calculus
+business-math:
+  - title: Business Math
     children:
+      - title: Site Home
+        url: /
+      - title: Course Home
+        url: /business-math/
+
+applied-calculus:
+  - title: 'Applied Calculus'
+    children:
+    - title: Site Home
+      url: /
     - title: Course Home 
-      url: /applied-calculus/index.html
+      url: /applied-calculus/
   - title: Functions and Limits
     children:
       - title: '01: Exponents and Equations'
@@ -101,3 +119,43 @@ app-calc:
         url: /applied-calculus/m15-area-integration.html
       - title: '16: Integration by Parts'
         url: /applied-calculus/m16-integration-by-parts.html
+
+calculus-1:
+  - title: 'Calculus 1'
+    children:
+    - title: Site Home
+      url: /
+    - title: Course Home 
+      url: /calculus-1/
+  - title: Limits and Derivatives
+    children:
+      - title: '01: The Limit'
+        url: /calculus-1/m01-the-limit.html
+      - title: '02: Precise Definition of Limits'
+        url: /calculus-1/m02-precise-limits.html
+      - title: '03: The Derivative'
+        url: /calculus-1/m03-the-derivative.html
+  - title: The Derivative
+    children:
+      - title: '04: Differentiation Methods 1'
+        url: /calculus-1/m04-differentiation-methods-1.html
+      - title: '05: Differentiation Methods 2'
+        url: /calculus-1/m05-differentiation-methods-2.html
+      - title: '06: Applications of Differentiation'
+        url: /calculus-1/m06-applications-of-differntation.html
+  - title: Derivative Tests and Antidifferentiation
+    children:
+      - title: '07: Differentiation and Graphing'
+        url: /calculus-1/m07-differentiation-and-graphing.html
+      - title: '08: Antiderivatives'
+        url: /calculus-1/m08-antiderivatives.html
+      - title: '09: Area and Integrals'
+        url: /calculus-1/m09-area-and-integrals.html
+  - title: Integration and the Fundamental Theorem
+    children:
+      - title: '10: The Fundamental Theorem of Calculus'
+        url: /calculus-1/m10-fundamental-theorem.html
+      - title: '11: Integration Methods 1'
+        url: /calculus-1/m11-integration-methods-1.html
+      - title: '12: Integration Methods 2'
+        url: /calculus-1/m12-integration-methods-2.html
